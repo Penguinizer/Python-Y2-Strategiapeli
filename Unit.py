@@ -53,6 +53,29 @@ class Unit(object):
     def ReturnEquipment(self):
         return self.Equipment
 
+    def ReturnWeapon(self):
+        for Equip in self.Equipment:
+            if Equip.ReturnType() == 0:
+                return Equip
+
+    def EquipItem(self, Equip):
+        if Equip.ReturnType()==0:
+            self.Equipment.append(Equip)
+        elif Equip.ReturnType()==1:
+            self.Equipment.append(Equip)
+
+            ## 1 on Hitpoints, 2 on Armor, 3 on Movement Points.
+            if Equip.ReturnStatAffected() == 1:
+                self.HitPoints += Equip.ReturnValue
+
+            elif  Equip.ReturnStatAffected() == 2:
+                self.Armor += Equip.ReturnValue
+
+            elif  Equip.ReturnStatAffected() == 3:
+                self.MovementPoints += Equip.ReturnValue
+
+
+
 def CreateUnit(Player, UniqueID, UnitID):
     BaselineUnit = Player.GetGame().ReturnSpecificUnit(UnitID)
     ## Käytetään olemassa olevaa funktiota ja saadaan baseline unit jonka tiedot kopioidaan uuten, joka palautetaan.
