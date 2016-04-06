@@ -12,27 +12,10 @@ class Player(object):
         else:
             self.isAI = False
 
-    def GetPlayerName(self):
-        return self.Name
-
-    def GetAIProfile(self):
-        return self.AIProfile
-
-    def GetGame(self):
-        return self.Game
-
-    def TellIfIsAI(self):
-        return self.isAI
-
-    def AppendUnit(self, Unit):
-        self.PlayerUnitList.append(Unit)
-
-    def ReturnAllUnits(self):
-        return self.PlayerUnitList
 
     def ReturnSpecificUnit(self, UnitID):
         for Unit in self.PlayerUnitList:
-            if Unit.ReturnID() == UnitID:
+            if Unit.UnitID == UnitID:
                 return Unit
 
         else:

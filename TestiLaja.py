@@ -51,3 +51,17 @@ for y in range(0,XSize):
 print(MapMatrix)
 
 '''
+
+type = int(input("Select encounter type:\n 1: Gang\n 2: Corporate Securityn\n 3: KnightErrantTeam\n 4: Opposing Team\n "))
+if 0 < type <= 4:
+    print(type)
+
+CorrectAnswer = False
+try:
+    MageMembers = abs(int(input("\n Select amount of mages: ")))
+    CorrectAnswer = True
+except ValueError:
+    print("Requires Number.\n")
+
+print(MageMembers)
+print(CorrectAnswer)

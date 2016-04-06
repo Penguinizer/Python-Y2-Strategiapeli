@@ -27,23 +27,5 @@ class Tile(object):
         3 = Open
         '''
 
-    def ReturnTileType(self):
-        return self.TileType
-
-    def ReturnTerrainType(self):
-        return self.TerrainType
-
-    def ReturnLocoation(self):
-        return self.Location
-
-    def ReturnColor(self):
-        return self.Color
-
-    def ReturnAccuracyModifier(self):
-        return self.AccuracyModifier
-
-    def ReturnUnitInSquare(self):
-        return self.UnitInSquare
-
     def SetUnitInSquare(self, Unit):
         self.UnitInSquare = Unit

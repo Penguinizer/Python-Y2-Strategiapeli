@@ -14,24 +14,6 @@ class Unit(object):
         self.MovementPoints = MovementPoints
         self.Equipment = []
 
-    def ReturnPlayer(self):
-        return self.OwningPlayer
-
-    def ReturnUniqueID(self):
-        return self.UniqueID
-
-    def ReturnName(self):
-        return self.Name
-
-    def ReturnCost(self):
-        return self.Cost
-
-    def ReturnUnitType(self):
-        return self.UnitType
-
-    def ReturnHitPoints(self):
-        return self.HitPoints
-
     def ReduceHitPoints(self, num):
         self.HitPoints -= num
         return self.HitPoints
@@ -40,22 +22,14 @@ class Unit(object):
         self.HitPoints += num
         return self.HitPoints
 
-    def ReturnArmor(self):
-        return self.Armor
-
-    def ReturnMovementPoints(self):
-        return self.MovementPoints
 
     def ReduceMovementPoints(self, num):
         self.MovementPoints -= num
         return self.MovementPoints
 
-    def ReturnEquipment(self):
-        return self.Equipment
-
     def ReturnWeapon(self):
         for Equip in self.Equipment:
-            if Equip.ReturnType() == 0:
+            if Equip.Type == 0:
                 return Equip
 
     def EquipItem(self, Equip):
@@ -65,23 +39,23 @@ class Unit(object):
             self.Equipment.append(Equip)
 
             ## 1 on Hitpoints, 2 on Armor, 3 on Movement Points.
-            if Equip.ReturnStatAffected() == 1:
-                self.HitPoints += Equip.ReturnValue
+            if Equip.StatAffected == 1:
+                self.HitPoints += Equip.Value
 
-            elif  Equip.ReturnStatAffected() == 2:
-                self.Armor += Equip.ReturnValue
+            elif  Equip.StatAffected == 2:
+                self.Armor += Equip.Value
 
-            elif  Equip.ReturnStatAffected() == 3:
-                self.MovementPoints += Equip.ReturnValue
+            elif  Equip.StatAffected == 3:
+                self.MovementPoints += Equip.Value
 
 
 
 def CreateUnit(Player, UniqueID, UnitID):
-    BaselineUnit = Player.GetGame().ReturnSpecificUnit(UnitID)
+    BaselineUnit = Player.Game.ReturnSpecificUnit(UnitID)
     ## Käytetään olemassa olevaa funktiota ja saadaan baseline unit jonka tiedot kopioidaan uuten, joka palautetaan.
     ## Player, UniqueID, UnitID, Name, Cost, UnitType, HitPoints, Armor, MovementPoints. Unit inputit.
-    FinishedUnit = Unit(Player, UniqueID, UnitID, BaselineUnit.ReturnName, BaselineUnit.ReturnCost,
-                        BaselineUnit.ReturnUnitType, BaselineUnit.ReturnHitPoints, BaselineUnit.ReturnArmor,
-                        BaselineUnit.ReturnMovementPoints)
+    FinishedUnit = Unit(Player, UniqueID, UnitID, BaselineUnit.Name, BaselineUnit.Cost,
+                        BaselineUnit.UnitType, BaselineUnit.HitPoints, BaselineUnit.Armor,
+                        BaselineUnit.MovementPoints)
 
     return FinishedUnit
