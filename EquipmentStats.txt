@@ -1,0 +1,2 @@
+{"Name" : "Test Weapon", "Cost" : 5, "ID" : 1, "Type" : "Weapon", "Optimal Range" : 4 , "Falloff Range" : 8, "Damage" : 8 , "Armor Penetration" : 1}
+{"Name" : "Test Gear" , "Cost" : 3 , "ID" : 2, "Type" : "Gear" , "Stat Affected" : 2, "Value" : 3}

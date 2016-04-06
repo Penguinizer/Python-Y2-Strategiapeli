@@ -51,7 +51,7 @@ for y in range(0,XSize):
 print(MapMatrix)
 
 '''
-
+'''
 type = int(input("Select encounter type:\n 1: Gang\n 2: Corporate Securityn\n 3: KnightErrantTeam\n 4: Opposing Team\n "))
 if 0 < type <= 4:
     print(type)
@@ -65,3 +65,25 @@ except ValueError:
 
 print(MageMembers)
 print(CorrectAnswer)
+'''
+import json
+import Unit
+array = []
+mode = "Units"
+Filename = "UnitStats.txt"
+with open(Filename, 'r') as f:
+        for line in f:
+            jsonline = json.loads(line)
+            if (mode == "Units"):
+                ##Player, UniqueID, UnitID, Name, Cost, UnitType, HitPoints, Armor, MovementPoints
+                array.append(Unit.Unit("Baseline Unit", 0, jsonline.get("ID"), jsonline.get("Name"), jsonline.get("Cost"),
+                                  jsonline.get("Unit Type"), jsonline.get("Hit Points"), jsonline.get("Armor"),
+                                  jsonline.get("Movement Points")))
+
+print(array)
+print(array[0].Name)
+print(array[1].Name)
+
+for unit in array:
+    if unit.UnitID == 2:
+        print(unit.Name)
