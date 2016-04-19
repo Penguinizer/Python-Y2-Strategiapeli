@@ -66,6 +66,7 @@ except ValueError:
 print(MageMembers)
 print(CorrectAnswer)
 '''
+'''
 import json
 import Unit
 array = []
@@ -87,3 +88,11 @@ print(array[1].Name)
 for unit in array:
     if unit.UnitID == 2:
         print(unit.Name)
+'''
+'''
+import pygame
+pygame.init()
+
+size = (700, 500)
+screen = pygame.display.set_mode(size)
+'''

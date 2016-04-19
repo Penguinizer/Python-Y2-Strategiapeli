@@ -4,6 +4,7 @@ class Tile(object):
         self.TerrainType = TerrainType
         self.Location = (x,y)
         self.UnitInSquare = None
+        self.AccuracyModifier
 
         ##Määritellään tile tyypin perusteella. Prosentti modifier. Väri alussa määrittyy vain tile tyypistä.
         ##Tulevaisuudessa määrittyy myös terrain typestä. Tällä hetkellä yksinkertainen versio.
@@ -29,3 +30,34 @@ class Tile(object):
 
     def SetUnitInSquare(self, Unit):
         self.UnitInSquare = Unit
+        return True
+
+    def MoveUnit(self, TargetTile):
+        ##Tarkistetaan onko viereinen ruutu.
+        if self.GetDistance(TargetTile) > 1:
+            return False
+        ## Tarkistetaan voiko ruutuun edes liikkua.
+        elif TargetTile.TileType == 0:
+            return False
+        elif TargetTile.TileType == 1 and self.UnitInSquare.MovementPoints <= 1:
+            return False
+        elif self.UnitInSquare.MovementPoints == 0:
+            return False
+
+        if TargetTile.TileType == 1:
+            self.UnitInSquare.MovementPoints -= 2
+            TargetTile.SetUnitInSquare(self.UnitInSquare)
+            self.UnitInSquare = None
+            return True
+
+        else:
+            self.UnitInSquare.MovementPoints -= 1
+            TargetTile.SetUnitInSquare(self.UnitInSquare)
+            self.UnitInSquare = None
+            return True
+
+    def GetDistance(self, TargetTile):
+        distancex = self.Location[0] - TargetTile.Location[0]
+        distancey = self.Location[1] - TargetTile.Location[1]
+        distance = max(distancex, distancey)
+        return distance

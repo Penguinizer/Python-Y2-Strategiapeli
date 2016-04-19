@@ -26,4 +26,10 @@ def Filereader(Filename, mode):
                     array.append(Equipment.Gear(jsonline.get("Name"), jsonline.get("Cost"), jsonline.get("ID"),
                                                  jsonline.get("Type"), jsonline.get("Stat Affected"), jsonline.get("Value")))
 
+            elif (mode == "ConfigSize"):
+                array.append((jsonline.get("Window Size X"), jsonline.get("Window Size Y")))
+
+            elif (mode == "ConfigMaxFPS"):
+                array.append(jsonline.get("MaxFPS"))
+
     return array

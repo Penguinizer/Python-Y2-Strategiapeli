@@ -1,5 +1,6 @@
 import Game
 import Player
+import random
 
 class Unit(object):
     def __init__(self, Player, UniqueID, UnitID, Name, Cost, UnitType, HitPoints, Armor, MovementPoints):
@@ -49,7 +50,6 @@ class Unit(object):
                 self.MovementPoints += Equip.Value
 
 
-
 def CreateUnit(Player, UniqueID, UnitID):
     BaselineUnit = Player.Game.ReturnSpecificUnit(UnitID)
     ## Käytetään olemassa olevaa funktiota ja saadaan baseline unit jonka tiedot kopioidaan uuten, joka palautetaan.
@@ -59,3 +59,27 @@ def CreateUnit(Player, UniqueID, UnitID):
                         BaselineUnit.MovementPoints)
 
     return FinishedUnit
+
+def AttackUnit(OwnTile, TargetTile):
+        damage = OwnTile.UnitInSquare.ReturnWeapon().Damage
+        armorpen = OwnTile.UnitInSquare.ReturnWeapon().ArmorPen
+        optimalrange = OwnTile.UnitInSquare.ReturnWeapon().OptimalRange
+        falloffrange = OwnTile.UnitInSquare.ReturnWeapon().FalloffRange
+        accuracymodifier = TargetTile.AccuracyModifier
+
+        distance = OwnTile.GetDistance(TargetTile)
+
+        if distance < optimalrange:
+            unmoddamage = round(damage* (0.7 - accuracymodifier + (random.random()*20)))
+            damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
+
+            TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
+
+        elif optimalrange < distance < falloffrange:
+            unmoddamage = round(damage* ((0.5) - accuracymodifier + (random.random()*20)))
+            damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
+            TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
+
+
+        else:
+            return "Out of range. No damage dealt."

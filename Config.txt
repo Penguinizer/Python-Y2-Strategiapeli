@@ -1,0 +1,1 @@
+{"Window Size X" : 1024, "Window Size Y": 800, "MaxFPS" : 20}
