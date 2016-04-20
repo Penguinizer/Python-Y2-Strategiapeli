@@ -32,7 +32,6 @@ def OptionsLoop():
 
     def PrintOptionsToFile():
         string = "{\"Window Size X\" : " +str(tempResolution[0])+", \"Window Size Y\" : "+str(tempResolution[1])+", \"MaxFPS\" : "+str(tempMaxFPS)+"}"
-        print(string)
         file = open("Config.txt", 'w')
         file.write(string)
         file.close()
