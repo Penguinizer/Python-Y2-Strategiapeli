@@ -1,5 +1,6 @@
 import pygame
 import TextCenterer
+import time
 
 def Button(rect, text, ac, pc, screen, action=None):
     mouse = pygame.mouse.get_pos()
@@ -10,6 +11,7 @@ def Button(rect, text, ac, pc, screen, action=None):
 
         if click[0] == 1 and action != None:
             action()
+            time.sleep(0.1)
 
     else:
         pygame.draw.rect(screen, pc, rect)

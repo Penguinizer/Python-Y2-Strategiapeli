@@ -1,7 +1,8 @@
 import pygame
 import FileReader
 import TextCenterer
-import ButtonStuff
+from ButtonStuff import Button
+from OptionsMenuLoop import OptionsLoop
 
 def mainmenu():
     '''
@@ -19,13 +20,16 @@ def mainmenu():
     White = (0xFF,0xFF,0xFF)
     Green = ((0,220,0))
 
+    def QuitGame():
+        pygame.event.post(pygame.event.Event(pygame.QUIT))
+
     while gashunk:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: ##Peli sulkeutuu painamalla closea.
                 gashunk = False
 
         ##Rectit määritellään tässä. Pitää määritellä tässä koska muuten pelilogiikan hiiri osio ei toimi oikein.
-        menuxy = ((size[0]/2)-200, (size[1]/2)-230)
+        menuxy = ((size[0]/2)-200, (size[1]/2)-180)
         titlebox = pygame.Rect(menuxy[0], menuxy[1]-100, 400, 80)
         menubox = pygame.Rect(menuxy[0], menuxy[1],400,460)
         startgamebutton = pygame.Rect(menuxy[0]+40, menuxy[1]+40, 320, 100)
@@ -48,11 +52,11 @@ def mainmenu():
         title = TextCenterer.ButtonText("Python-Y2 Strategy Game", titlebox, Black)
         title.draw(screen)
 
-        ##Piirretään rect:it nappien alle jotta saadaan ne muuttamaan väriä jos hiiri on niiden päällä.
+        ##Piirretään nappi käyttäen sitä varten tehtyä funktiota.
         ## Button function kutsu: Button(rect, text, ac, pc, screen, action=None):
-        ButtonStuff.Button(startgamebutton, "Start Game", Green, White, screen)
-        ButtonStuff.Button(optionsbutton, "Options", Green, White, screen)
-        ButtonStuff.Button(quitbutton, "Quit Game", Green, White, screen, QuitGame)
+        Button(startgamebutton, "Start Game", Green, White, screen)
+        Button(optionsbutton, "Options", Green, White, screen, OptionsLoop)
+        Button(quitbutton, "Quit Game", Green, White, screen, QuitGame)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()
@@ -60,9 +64,5 @@ def mainmenu():
         clock.tick(FileReader.Filereader("Config.txt", "ConfigMaxFPS")[0])
 
     pygame.quit()
-
-def QuitGame():
-    pygame.quit()
-    quit()
 
 mainmenu()
