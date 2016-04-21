@@ -16,6 +16,11 @@ def UnitSelection(InputGame):
     def QuitGame():
         pygame.event.post(pygame.event.Event(pygame.QUIT))
 
+    def ConfirmUnitsSelected():
+        nonlocal UnitsSelected
+        UnitsSelected = True
+        GameplayLoop()
+
     while gashunk:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: ##Peli sulkeutuu painamalla closea.
@@ -25,6 +30,9 @@ def UnitSelection(InputGame):
         ##Saattaisi rikkoa asioita aika pahasti. Näin ollen, breakataan jotta palataan suoraan main menuun.
         if UnitsSelected == True:
             break
+
+        ##Piirto koodi. Ensiksi ruutu valkoiseksi. Sitte scheissea ruutuun. Kaiken pitäis mennä fillin alapuolelle.
+        screen.fill(White)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()
