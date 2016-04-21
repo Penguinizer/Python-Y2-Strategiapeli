@@ -18,6 +18,9 @@ def OptionsLoop():
     Resolution = FileReader.Filereader("Config.txt", "ConfigSize")[0]
     tempResolution = Resolution
 
+    def QuitMenu():
+        pygame.event.post(pygame.event.Event(pygame.QUIT))
+
     def SetFPS(number):
         def ActuallySetFPS():
             nonlocal tempMaxFPS
@@ -76,7 +79,3 @@ def OptionsLoop():
         pygame.display.flip()
         ##Asetetaan max FPS config tiedoston mukaan.
         clock.tick(FileReader.Filereader("Config.txt", "ConfigMaxFPS")[0])
-
-
-def QuitMenu():
-    pygame.event.post(pygame.event.Event(pygame.QUIT))

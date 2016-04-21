@@ -4,7 +4,6 @@ class Tile(object):
         self.TerrainType = TerrainType
         self.Location = (x,y)
         self.UnitInSquare = None
-        self.AccuracyModifier
 
         ##Määritellään tile tyypin perusteella. Prosentti modifier. Väri alussa määrittyy vain tile tyypistä.
         ##Tulevaisuudessa määrittyy myös terrain typestä. Tällä hetkellä yksinkertainen versio.

@@ -3,6 +3,7 @@ import FileReader
 import TextCenterer
 from ButtonStuff import Button
 from OptionsMenuLoop import OptionsLoop
+from GameSetupLoop import GameSetup
 
 def mainmenu():
     '''
@@ -54,7 +55,7 @@ def mainmenu():
 
         ##Piirretään nappi käyttäen sitä varten tehtyä funktiota.
         ## Button function kutsu: Button(rect, text, ac, pc, screen, action=None):
-        Button(startgamebutton, "Start Game", Green, White, screen)
+        Button(startgamebutton, "Start Game", Green, White, screen, GameSetup)
         Button(optionsbutton, "Options", Green, White, screen, OptionsLoop)
         Button(quitbutton, "Quit Game", Green, White, screen, QuitGame)
 

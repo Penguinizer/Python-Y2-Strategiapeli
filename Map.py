@@ -1,10 +1,10 @@
-import Tile
 import random
+from Tile import Tile
 
 class Map(object):
     def __init__(self, XSize, YSize, TerrainType, Game):
         self.MapSize = (YSize, XSize)
-        self.MapMatrix = [[None for x in range (0,XSize)] for y in range(0,YSize)]
+        self.MapMatrix = [[None for x in range (0,YSize)] for y in range(0,XSize)]
         self.TerrainType = TerrainType
         self.Game = Game
 

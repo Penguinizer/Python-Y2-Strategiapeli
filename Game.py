@@ -6,9 +6,9 @@ class Game(object):
     def __init__(self):
         ##Tiedot täytetään myöhemmin.
         self.Players = []
-        self.Playercount = 0
+        self.HumanPlayerCount = 0
+        self.AIPlayerCount = 0
         self.Map = None
-        self.Pointcount = 0
         self.Turncounter = 0
         self.BaselineUnitArray = []
         self.BaselineEquipmentArray = []

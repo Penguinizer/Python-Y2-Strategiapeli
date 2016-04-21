@@ -1,17 +1,11 @@
 
 class Player(object):
-    def __init__(self, PlayerName, AIConfig, Game):
+    def __init__(self, PlayerName, isAI, Game):
         self.Name = PlayerName
-        self.AIProfile = AIConfig
-        self.isAI = None
+        self.isAI = isAI
         self.PlayerUnitList = []
         self.Game = Game
-
-        if self.AIProfile != None:
-            self.isAI = True
-        else:
-            self.isAI = False
-
+        self.PointsAvailable = 0
 
     def ReturnSpecificUnit(self, UnitID):
         for Unit in self.PlayerUnitList:
