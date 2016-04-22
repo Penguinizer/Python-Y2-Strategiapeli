@@ -1,2 +1,3 @@
 {"Name": "Test Unit 1", "ID": 1, "Cost" : 50, "Unit Type" : "Infantry", "Hit Points" : 20, "Armor" : 5, "Movement Points" : 3}
 {"Name": "Test Unit 2", "ID": 2, "Cost" : 100, "Unit Type" : "Infantry", "Hit Points" : 36, "Armor" : 8, "Movement Points" : 3}
+{"Name": "Test Unit 3", "ID": 3, "Cost" : 200, "Unit Type" : "Vehicle", "Hit Points" : 50, "Armor" : 12, "Movement Points" : 4}

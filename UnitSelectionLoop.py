@@ -2,6 +2,7 @@ import pygame
 from GameplayLoop import GameplayLoop
 from ButtonStuff import Button
 import FileReader
+import Unit
 
 def UnitSelection(InputGame):
     Game = InputGame
@@ -13,27 +14,47 @@ def UnitSelection(InputGame):
     White = (0xFF,0xFF,0xFF)
     Green = ((0,220,0))
     UnitsSelected = False
+    unitlistlen = len(Game.BaselineUnitArray)
+    equiplistlen = len(Game.BaselineEquipmentArray)
+    unitscrollroom = max(0, (unitlistlen - 3))
     menuscrollvariable = 0
-
-    ##Testimuuttuja
     pickingplayer = Game.Players[0]
+    playeriterator = 0
+    uniqueIDiterator = 0
 
     def QuitGame():
         pygame.event.post(pygame.event.Event(pygame.QUIT))
 
     def ConfirmUnitsSelected():
-        nonlocal UnitsSelected
-        UnitsSelected = True
-        GameplayLoop(Game)
-
-    def MenuUp():
-        nonlocal menuscrollvariable
-        menuscrollvariable += 1
+        nonlocal pickingplayer
+        nonlocal playeriterator
+        playeriterator += 1
+        if playeriterator == len(Game.Players):
+            nonlocal UnitsSelected
+            UnitsSelected = True
+            GameplayLoop(Game)
+        else:
+            pickingplayer = Game.Players[playeriterator]
 
     def MenuDown():
         nonlocal menuscrollvariable
-        if menuscrollvariable >= 0:
+        nonlocal unitscrollroom
+        if menuscrollvariable < unitscrollroom:
+            menuscrollvariable += 1
+
+    def MenuUp():
+        nonlocal menuscrollvariable
+        if menuscrollvariable > 0:
             menuscrollvariable -= 1
+
+    def AddUnit(unit, player):
+        def ReallyAddUnit():
+            if player.PointsAvailable >= unit.Cost:
+                nonlocal uniqueIDiterator
+                uniqueIDiterator += 1
+                player.PlayerUnitList.append(Unit.CreateUnit(player, uniqueIDiterator, unit.UnitID))
+                player.PointsAvailable -= unit.Cost
+        return ReallyAddUnit
 
     while gashunk:
         for event in pygame.event.get():
@@ -64,8 +85,17 @@ def UnitSelection(InputGame):
         ##Listan scrollaus ylös ja alas
         upbutton = pygame.Rect(menuxy[0]+500, menuxy[1]+400, 75, 75)
         downbutton = pygame.Rect(menuxy[0]+600, menuxy[1]+400, 75, 75)
-        Button(upbutton, "Up", Green, White, screen, MenuUp())
-        Button(downbutton, "Down", Green, White, screen, MenuDown())
+        Button(upbutton, "Up", Green, White, screen, MenuUp)
+        Button(downbutton, "Down", Green, White, screen, MenuDown)
+
+        ##Piirtää yksikkö boksit. 300 pikseliä tilaa. 3 yksikköboksia, 100 pikseliä korkeutta per.
+        unitstrings = []
+        for unit in Game.BaselineUnitArray:
+            unitstrings.append(unit.Name + ", Cost: " + str(unit.Cost) + ", Type: " + unit.UnitType + ", HP: "
+                               + str(unit.HitPoints) + ", Armor: " + str(unit.Armor) + ", MP: " + str(unit.MovementPoints))
+        for butts in range(3):
+            Button(pygame.Rect(menuxy[0], menuxy[1]+75+butts*100, 700, 100), unitstrings[butts + menuscrollvariable]
+                   ,Green, White, screen,AddUnit(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
 
         ##Confirm valinnat nappi
         confirmbutton = pygame.Rect(menuxy[0]+25, menuxy[1]+400, 200, 75)

@@ -148,7 +148,7 @@ def GameSetup():
         ##Napit pisteiden asettamista varten.
         elif not PointsSet and Playersadded:
             for k in range(pointsamountsvar):
-                Button(pointsrects[k], str(100+k*100) + "Points", Green, White, screen, SetPoints((100+k*100), NewGame))
+                Button(pointsrects[k], str(300+k*100) + "Points", Green, White, screen, SetPoints((100+k*100), NewGame))
         ##Napit kartan lisäämistä varten.
         elif not MapAdded and PointsSet and Playersadded:
             Button(xincrease, "+ X", Green, White, screen, XIncrease)
