@@ -30,13 +30,14 @@ class Unit(object):
 
     def ReturnWeapon(self):
         for Equip in self.Equipment:
-            if Equip.Type == 0:
+            if Equip.Type == "Weapon":
                 return Equip
+        return None
 
     def EquipItem(self, Equip):
-        if Equip.ReturnType()==0:
+        if Equip.Type=="Weapon":
             self.Equipment.append(Equip)
-        elif Equip.ReturnType()==1:
+        elif Equip.Type== "Gear":
             self.Equipment.append(Equip)
 
             ## 1 on Hitpoints, 2 on Armor, 3 on Movement Points.
@@ -72,7 +73,6 @@ def AttackUnit(OwnTile, TargetTile):
         if distance < optimalrange:
             unmoddamage = round(damage* (0.7 - accuracymodifier + (random.random()*20)))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
-
             TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
 
         elif optimalrange < distance < falloffrange:

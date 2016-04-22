@@ -31,14 +31,14 @@ class Gear(Equipment):
 def CreateEquipment(Player, EquipmentID):
     BaselineEquip = Player.Game.ReturnSpecificEquipment(EquipmentID)
 
-    if BaselineEquip.ReturnType() == 0:
+    if BaselineEquip.Type == 0:
         ## Name, Cost, EquipmentID, Type, OptimalRange, FalloffRange, Damage, ArmorPen.
         ## Weapon Inputit
         NewEquip = Weapon(BaselineEquip.Name, BaselineEquip.Cost, BaselineEquip.EquipmentID,
                           BaselineEquip.Type, BaselineEquip.OptimalRange, BaselineEquip.FalloffRange,
                           BaselineEquip.Damage, BaselineEquip.ArmorPen)
 
-    elif BaselineEquip.ReturnType() == 1:
+    elif BaselineEquip.Type == 1:
         NewEquip = Gear(BaselineEquip.Name, BaselineEquip.Cost, BaselineEquip.EquipmentID,
                         BaselineEquip.Type, BaselineEquip.StatAffected, BaselineEquip.Value)
 

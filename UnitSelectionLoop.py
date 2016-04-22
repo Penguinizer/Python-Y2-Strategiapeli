@@ -17,10 +17,13 @@ def UnitSelection(InputGame):
     unitlistlen = len(Game.BaselineUnitArray)
     equiplistlen = len(Game.BaselineEquipmentArray)
     unitscrollroom = max(0, (unitlistlen - 3))
+    equipscrollroom = max(0, (equiplistlen -3))
     menuscrollvariable = 0
     pickingplayer = Game.Players[0]
     playeriterator = 0
     uniqueIDiterator = 0
+    PickingGear = False
+    newunit = None
 
     def QuitGame():
         pygame.event.post(pygame.event.Event(pygame.QUIT))
@@ -39,22 +42,56 @@ def UnitSelection(InputGame):
     def MenuDown():
         nonlocal menuscrollvariable
         nonlocal unitscrollroom
-        if menuscrollvariable < unitscrollroom:
-            menuscrollvariable += 1
+        nonlocal equipscrollroom
+        if PickingGear == True:
+            if menuscrollvariable < equipscrollroom:
+                menuscrollvariable +=1
+        else:
+            if menuscrollvariable < unitscrollroom:
+                menuscrollvariable += 1
 
     def MenuUp():
         nonlocal menuscrollvariable
         if menuscrollvariable > 0:
             menuscrollvariable -= 1
 
-    def AddUnit(unit, player):
-        def ReallyAddUnit():
+    def AddUnitSelectEquip(unit, player):
+        def ReallyAddUnitSelectEquip():
             if player.PointsAvailable >= unit.Cost:
                 nonlocal uniqueIDiterator
+                nonlocal newunit
+                nonlocal PickingGear
+                nonlocal menuscrollvariable
+                menuscrollvariable = 0
                 uniqueIDiterator += 1
-                player.PlayerUnitList.append(Unit.CreateUnit(player, uniqueIDiterator, unit.UnitID))
-                player.PointsAvailable -= unit.Cost
-        return ReallyAddUnit
+                newunit = Unit.CreateUnit(player, uniqueIDiterator, unit.UnitID)
+                player.PointsAvailable -= newunit.Cost
+                PickingGear = True
+        return ReallyAddUnitSelectEquip
+
+    def AddEquipToUnit(unit, equip, player):
+        def ReallAddEquipToUnit():
+            if equip.Type == "Weapon":
+                if unit.ReturnWeapon() == None:
+                    player.PointsAvailable -= equip.Cost
+                    unit.EquipItem(equip)
+            else:
+                player.PointsAvailable -= equip.Cost
+                unit.EquipItem(equip)
+        return ReallAddEquipToUnit
+
+    def ConfirmEquip(newunit, player):
+        def ReallyConfirmEquip():
+            nonlocal newunit
+            if newunit.ReturnWeapon() != None:
+                nonlocal PickingGear
+                nonlocal menuscrollvariable
+                menuscrollvariable = 0
+                player.PlayerUnitList.append(newunit)
+                newunit = None
+                PickingGear = False
+        return ReallyConfirmEquip
+
 
     while gashunk:
         for event in pygame.event.get():
@@ -89,17 +126,42 @@ def UnitSelection(InputGame):
         Button(downbutton, "Down", Green, White, screen, MenuDown)
 
         ##Piirtää yksikkö boksit. 300 pikseliä tilaa. 3 yksikköboksia, 100 pikseliä korkeutta per.
-        unitstrings = []
-        for unit in Game.BaselineUnitArray:
-            unitstrings.append(unit.Name + ", Cost: " + str(unit.Cost) + ", Type: " + unit.UnitType + ", HP: "
+        ##jos pikataan gearia niin tekee sen tässä.
+        if PickingGear == True:
+            gearstrings = []
+            for gear in Game.BaselineEquipmentArray:
+                if gear.Type == "Weapon":
+                    gearstrings.append(gear.Name + ", Cost: " + str(gear.Cost) + ", Weapon, DMG: " + str(gear.Damage) + ", AP: "
+                                       + str(gear.ArmorPen) + ", OR/FO: " + str(gear.OptimalRange)+ "/" + str(gear.FalloffRange))
+
+                elif gear.Type == "Gear":
+                    if gear.StatAffected == 1:
+                        gearstrings.append(gear.Name +", Cost: " + str(gear.Cost) + ", Affects: HP, Amount: " + str(gear.Value))
+                    elif gear.StatAffected == 2:
+                        gearstrings.append(gear.Name +", Cost: " + str(gear.Cost) + ", Affects: Armor, Amount: " + str(gear.Value))
+                    elif gear.StatAffected == 3:
+                        gearstrings.append(gear.Name +", Cost: " + str(gear.Cost) + ", Affects: MP, Amount: " + str(gear.Value))
+
+            for var in range(3):
+                Button (pygame.Rect(menuxy[0], menuxy[1]+75+var*100, 700, 100), gearstrings[var + menuscrollvariable]
+                       , Green, White, screen, AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable], pickingplayer))
+                ##AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable])
+
+            Button(pygame.Rect(menuxy[0], menuxy[1]-75, 700, 75), "Confirm Unit Equipment", Green, White, screen, ConfirmEquip(newunit, pickingplayer))
+
+        elif PickingGear == False:
+            unitstrings = []
+            for unit in Game.BaselineUnitArray:
+                unitstrings.append(unit.Name + ", Cost: " + str(unit.Cost) + ", Type: " + unit.UnitType + ", HP: "
                                + str(unit.HitPoints) + ", Armor: " + str(unit.Armor) + ", MP: " + str(unit.MovementPoints))
-        for butts in range(3):
-            Button(pygame.Rect(menuxy[0], menuxy[1]+75+butts*100, 700, 100), unitstrings[butts + menuscrollvariable]
-                   ,Green, White, screen,AddUnit(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
+            for butts in range(3):
+                Button(pygame.Rect(menuxy[0], menuxy[1]+75+butts*100, 700, 100), unitstrings[butts + menuscrollvariable]
+                       ,Green, White, screen, AddUnitSelectEquip(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
 
         ##Confirm valinnat nappi
-        confirmbutton = pygame.Rect(menuxy[0]+25, menuxy[1]+400, 200, 75)
-        Button(confirmbutton, "Confirm Selections", Green, White, screen, ConfirmUnitsSelected)
+        if PickingGear == False:
+            confirmbutton = pygame.Rect(menuxy[0]+25, menuxy[1]+400, 200, 75)
+            Button(confirmbutton, "Confirm Selections", Green, White, screen, ConfirmUnitsSelected)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()
