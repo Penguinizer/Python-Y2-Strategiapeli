@@ -64,7 +64,8 @@ def GameSetup():
 
     def XDecrease():
         nonlocal Xvar
-        Xvar -= 1
+        if Xvar > 10:
+            Xvar -= 1
 
     def YIncrease():
         nonlocal Yvar
@@ -72,7 +73,8 @@ def GameSetup():
 
     def YDecrease():
         nonlocal Yvar
-        Yvar -= 1
+        if Yvar > 10:
+            Yvar -= 1
 
     def SetTerrain(var):
         def ActuallySetTerrain():

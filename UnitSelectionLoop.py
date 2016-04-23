@@ -73,11 +73,13 @@ def UnitSelection(InputGame):
         def ReallAddEquipToUnit():
             if equip.Type == "Weapon":
                 if unit.ReturnWeapon() == None:
+                    if player.PointsAvailable >= equip.Cost:
+                        player.PointsAvailable -= equip.Cost
+                        unit.EquipItem(equip)
+            else:
+                if player.PointsAvailable >= equip.Cost:
                     player.PointsAvailable -= equip.Cost
                     unit.EquipItem(equip)
-            else:
-                player.PointsAvailable -= equip.Cost
-                unit.EquipItem(equip)
         return ReallAddEquipToUnit
 
     def ConfirmEquip(newunit, player):

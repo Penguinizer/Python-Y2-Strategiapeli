@@ -33,7 +33,7 @@ def GameplayLoop(InputGame):
 
     def MapScrollUp():
         nonlocal ymapscrollvar
-        if ymapscrollvar < ymax-1:
+        if ymapscrollvar < (ymax-yspace):
             ymapscrollvar += 1
 
     def MapScrollDown():
@@ -48,7 +48,7 @@ def GameplayLoop(InputGame):
 
     def MapScrollRight():
         nonlocal xmapscrollvar
-        if xmapscrollvar < xmax-1:
+        if xmapscrollvar < (xmax-xspace):
             xmapscrollvar += 1
 
     while gashunk:
@@ -78,8 +78,12 @@ def GameplayLoop(InputGame):
 
         ##Komentonapit.
 
-        ##Roina
-        Button(pygame.Rect(100*xmapscrollvar, 100*ymapscrollvar, 100, 100), "Test", Green, White, screen)
+        ##Itse Kartta. (size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-200+(100*y), 100, 100
+        for y in range(0, yspace):
+            for x in range(0,xspace):
+                Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-100+(100*y), 100, 100),
+                       str(x+xmapscrollvar)+','+str(y+ymapscrollvar), Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color,
+                       Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color, screen)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()
