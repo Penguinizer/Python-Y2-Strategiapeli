@@ -1,6 +1,7 @@
 import json
 import Unit
 import Equipment
+from Player import Player
 
 def Filereader(Filename, mode):
     array = []
@@ -11,7 +12,7 @@ def Filereader(Filename, mode):
             jsonline = json.loads(line)
             if (mode == "Units"):
                 ##Player, UniqueID, UnitID, Name, Cost, UnitType, HitPoints, Armor, MovementPoints
-                array.append(Unit.Unit("Baseline Unit", 0, jsonline.get("ID"), jsonline.get("Name"), jsonline.get("Cost"),
+                array.append(Unit.Unit(Player("Baseline Unit", False, None), 0, jsonline.get("ID"), jsonline.get("Name"), jsonline.get("Cost"),
                                   jsonline.get("Unit Type"), jsonline.get("Hit Points"), jsonline.get("Armor"),
                                   jsonline.get("Movement Points")))
             elif (mode == "Equipment"):

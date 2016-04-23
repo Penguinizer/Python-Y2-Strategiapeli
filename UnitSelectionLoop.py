@@ -118,14 +118,14 @@ def UnitSelection(InputGame):
         ##Valitsevan pelaajan kertova juttu. Viereinen juttu kertoo jäljellä olevien pisteiden määrän.
         pickingplayerbox = pygame.Rect(menuxy[0], menuxy[1], 350, 75)
         playerpointsbox = pygame.Rect(menuxy[0]+350, menuxy[1], 350, 75)
-        Button(pickingplayerbox, pickingplayer.Name, White, White, screen)
-        Button(playerpointsbox, "Points Available: " + str(pickingplayer.PointsAvailable), White, White, screen)
+        Button(pickingplayerbox, pickingplayer.Name, White, White, screen, 25)
+        Button(playerpointsbox, "Points Available: " + str(pickingplayer.PointsAvailable), White, White, screen, 25)
 
         ##Listan scrollaus ylös ja alas
         upbutton = pygame.Rect(menuxy[0]+500, menuxy[1]+400, 75, 75)
         downbutton = pygame.Rect(menuxy[0]+600, menuxy[1]+400, 75, 75)
-        Button(upbutton, "Up", Green, White, screen, MenuUp)
-        Button(downbutton, "Down", Green, White, screen, MenuDown)
+        Button(upbutton, "Up", Green, White, screen, 25, MenuUp)
+        Button(downbutton, "Down", Green, White, screen, 25, MenuDown)
 
         ##Piirtää yksikkö boksit. 300 pikseliä tilaa. 3 yksikköboksia, 100 pikseliä korkeutta per.
         ##jos pikataan gearia niin tekee sen tässä.
@@ -146,10 +146,10 @@ def UnitSelection(InputGame):
 
             for var in range(3):
                 Button (pygame.Rect(menuxy[0], menuxy[1]+75+var*100, 700, 100), gearstrings[var + menuscrollvariable]
-                       , Green, White, screen, AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable], pickingplayer))
+                       , Green, White, screen, 25, AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable], pickingplayer))
                 ##AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable])
 
-            Button(pygame.Rect(menuxy[0], menuxy[1]-75, 700, 75), "Confirm Unit Equipment", Green, White, screen, ConfirmEquip(newunit, pickingplayer))
+            Button(pygame.Rect(menuxy[0], menuxy[1]-75, 700, 75), "Confirm Unit Equipment", Green, White, screen, 25, ConfirmEquip(newunit, pickingplayer))
 
         elif PickingGear == False:
             unitstrings = []
@@ -158,12 +158,12 @@ def UnitSelection(InputGame):
                                + str(unit.HitPoints) + ", Armor: " + str(unit.Armor) + ", MP: " + str(unit.MovementPoints))
             for butts in range(3):
                 Button(pygame.Rect(menuxy[0], menuxy[1]+75+butts*100, 700, 100), unitstrings[butts + menuscrollvariable]
-                       ,Green, White, screen, AddUnitSelectEquip(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
+                       ,Green, White, screen, 25, AddUnitSelectEquip(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
 
         ##Confirm valinnat nappi
         if PickingGear == False:
             confirmbutton = pygame.Rect(menuxy[0]+25, menuxy[1]+400, 200, 75)
-            Button(confirmbutton, "Confirm Selections", Green, White, screen, ConfirmUnitsSelected)
+            Button(confirmbutton, "Confirm Selections", Green, White, screen, 25, ConfirmUnitsSelected)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()

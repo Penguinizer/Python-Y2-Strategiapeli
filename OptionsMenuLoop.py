@@ -64,15 +64,15 @@ def OptionsLoop():
 
         ##Piirretään nappi käyttäen sitä varten tehtyä funktiota.
         ## Button function kutsu: Button(rect, text, ac, pc, screen, action=None):
-        Button(confirmbutton, "Save Settings", Green, White, screen, PrintOptionsToFile)
-        Button(quitbutton, "Main Menu", Green, White, screen, QuitMenu)
-        Button(twentyfps, "20 FPS", Green, White, screen, SetFPS(20))
-        Button(sixtyfps, "60 FPS", Green, White, screen, SetFPS(60))
-        Button(hundtwentyfps, "120 FPS", Green, White, screen, SetFPS(120))
-        Button(smallres, "800x600", Green, White, screen, SetResolution((800, 600)))
-        Button(medres, "1024x768", Green, White, screen, SetResolution((1024,768)))
-        Button(bigres, "1280x1024", Green, White, screen, SetResolution((1280,1024)))
-        Button(currentsettingsbox, "FPS: " +str(MaxFPS)+ ", Resolution: " + str(Resolution), White, White, screen)
+        Button(confirmbutton, "Save Settings", Green, White, screen, 25, PrintOptionsToFile)
+        Button(quitbutton, "Main Menu", Green, White, screen, 25, QuitMenu)
+        Button(twentyfps, "20 FPS", Green, White, screen, 25, SetFPS(20))
+        Button(sixtyfps, "60 FPS", Green, White, screen, 25, SetFPS(60))
+        Button(hundtwentyfps, "120 FPS", Green, White, screen, 25, SetFPS(120))
+        Button(smallres, "800x600", Green, White, screen, 25, SetResolution((800, 600)))
+        Button(medres, "1024x768", Green, White, screen, 25, SetResolution((1024,768)))
+        Button(bigres, "1280x1024", Green, White, screen, 25, SetResolution((1280,1024)))
+        Button(currentsettingsbox, "FPS: " +str(MaxFPS)+ ", Resolution: " + str(Resolution), White, White, screen, 25)
         ##Huom. FPS muuttaminen *saattaa* räjäyttää asiat käsiin. Excercise caution.
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.

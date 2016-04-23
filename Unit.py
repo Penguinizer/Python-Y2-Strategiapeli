@@ -14,6 +14,8 @@ class Unit(object):
         self.Armor = Armor
         self.MovementPoints = MovementPoints
         self.Equipment = []
+        self.UnitDeployed = False
+        self.UnitColor = self.OwningPlayer.PlayerColor
 
     def ReduceHitPoints(self, num):
         self.HitPoints -= num
@@ -75,11 +77,19 @@ def AttackUnit(OwnTile, TargetTile):
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
             TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
 
+            if TargetTile.UnitInSquare.HitPoints <= 0:
+                TargetTile.UnitInSquare.Player.PlayerUnitList.remove(TargetTile.UnitInSquare)
+                TargetTile.UnitInSquare = None
+
         elif optimalrange < distance < falloffrange:
             unmoddamage = round(damage* ((0.5) - accuracymodifier + (random.random()*20)))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
             TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
 
+            if TargetTile.UnitInSquare.HitPoints <= 0:
+                TargetTile.UnitInSquare.Player.PlayerUnitList.remove(TargetTile.UnitInSquare)
+                TargetTile.UnitInSquare = None
+
 
         else:
-            return "Out of range. No damage dealt."
+            print("Out of range. No damage dealt.")

@@ -2,7 +2,7 @@ import pygame
 import TextCenterer
 import time
 
-def Button(rect, text, ac, pc, screen, action=None):
+def Button(rect, text, ac, pc, screen, fontsize, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
@@ -18,5 +18,5 @@ def Button(rect, text, ac, pc, screen, action=None):
 
     pygame.draw.rect(screen, (0,0,0), rect, 3)
 
-    text = TextCenterer.ButtonText(text, rect, (0,0,0))
+    text = TextCenterer.ButtonText(text, rect, (0,0,0), fontsize)
     text.draw(screen)

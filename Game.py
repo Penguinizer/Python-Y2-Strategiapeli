@@ -9,7 +9,7 @@ class Game(object):
         self.HumanPlayerCount = 0
         self.AIPlayerCount = 0
         self.Map = None
-        self.Turncounter = 0
+        self.Turncounter = 1
         self.BaselineUnitArray = []
         self.BaselineEquipmentArray = []
 
@@ -48,11 +48,11 @@ class Game(object):
         raise ValueError("Faulty EquipmentID")
 
     def PopulateUnitArray(self):
-        ##Kutsuu funktion joka luke teksti-tiedoston. Täytetään tiedoston nimi myöhemmin.
+        ##Kutsuu funktion joka lukee teksti-tiedoston.
         Filename = "UnitStats.txt"
         self.BaselineUnitArray = FileReader.Filereader(Filename, "Units")
 
     def PopulateEquipmentArray(self):
-        ##Kutsuu funktion joka lukee equipment tiedot teksti-tiedostosta. Lisätään tiedoston nimi myöhemmin.
+        ##Kutsuu funktion joka lukee equipment tiedot teksti-tiedostosta.
         Filename = "EquipmentStats.txt"
         self.BaselineEquipmentArray = FileReader.Filereader(Filename, "Equipment")

@@ -50,14 +50,14 @@ def mainmenu():
         pygame.draw.rect(screen, Black, menubox, 3)
 
         ##Teksti roinat vakio rect:eissä.
-        title = TextCenterer.ButtonText("Python-Y2 Strategy Game", titlebox, Black)
+        title = TextCenterer.ButtonText("Python-Y2 Strategy Game", titlebox, Black, 30)
         title.draw(screen)
 
         ##Piirretään nappi käyttäen sitä varten tehtyä funktiota.
         ## Button function kutsu: Button(rect, text, ac, pc, screen, action=None):
-        Button(startgamebutton, "Start Game", Green, White, screen, GameSetup)
-        Button(optionsbutton, "Options", Green, White, screen, OptionsLoop)
-        Button(quitbutton, "Quit Game", Green, White, screen, QuitGame)
+        Button(startgamebutton, "Start Game", Green, White, screen, 25, GameSetup)
+        Button(optionsbutton, "Options", Green, White, screen, 25, OptionsLoop)
+        Button(quitbutton, "Quit Game", Green, White, screen, 25, QuitGame)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()

@@ -6,6 +6,7 @@ class Player(object):
         self.PlayerUnitList = []
         self.Game = Game
         self.PointsAvailable = 0
+        self.PlayerColor = (0xFF,0xFF,0xFF)
 
     def ReturnSpecificUnit(self, UnitID):
         for Unit in self.PlayerUnitList:
