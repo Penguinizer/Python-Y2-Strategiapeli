@@ -27,10 +27,6 @@ class Tile(object):
         3 = Open
         '''
 
-    def SetUnitInSquare(self, Unit):
-        self.UnitInSquare = Unit
-        return True
-
     def MoveUnit(self, TargetTile):
         ##Tarkistetaan onko viereinen ruutu.
         print("Tööt")
@@ -50,7 +46,7 @@ class Tile(object):
                     self.UnitInSquare.CurrentMovementPoints -= 2
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
                     print(self.UnitInSquare.UnitCoordinates)
-                    TargetTile.SetUnitInSquare(self.UnitInSquare)
+                    TargetTile.UnitInSquare=self.UnitInSquare
                     ##self.UnitInSquare = None
 
                     print("After")
@@ -68,7 +64,7 @@ class Tile(object):
                     print(TargetTile.Location)
                     self.UnitInSquare.CurrentMovementPoints -= 1
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
-                    TargetTile.SetUnitInSquare(self.UnitInSquare)
+                    TargetTile.UnitInSquare=self.UnitInSquare
                     print(self.UnitInSquare.UnitCoordinates)
                     ##self.UnitInSquare = None
 

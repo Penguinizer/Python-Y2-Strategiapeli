@@ -47,8 +47,11 @@ def GameplayLoop(InputGame):
     player = Player.Player("test", False, Game)
     unit = Unit.CreateUnit(player, 1, 1)
     unit.EquipItem(Game.BaselineEquipmentArray[1])
-    Game.Map.MapMatrix[0][0].UnitInSquare = unit
+    unit.UnitCoordinates = (1,1)
+    Game.Map.MapMatrix[1][1].UnitInSquare = unit
+    unitselected = unit
     '''
+
 
     def QuitGame():
         pygame.event.post(pygame.event.Event(pygame.QUIT))
@@ -89,8 +92,10 @@ def GameplayLoop(InputGame):
 
     def SelectUnit(unit):
         def ReallySelectUnit():
+            print(unit)
             nonlocal unitselected
             unitselected = unit
+            print(unitselected)
         return ReallySelectUnit
 
     def DeselectUnit():
@@ -132,6 +137,7 @@ def GameplayLoop(InputGame):
             print("Valittu yksikkö/sijainti.")
             print(unitselected)
             print(unitselected.UnitCoordinates)
+            print(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].UnitInSquare)
             print("Valittu ruutu.")
             print(clickedsquare)
             print("Klikattu ruutu ja etäisyys yksiköstä siihen.")
@@ -143,6 +149,20 @@ def GameplayLoop(InputGame):
                 Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
                     MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
                 ##print(unitselected.UnitCoordinates)
+        '''
+        print("Unit Selected:")
+        print(unitselected)
+        print("Unit via map matrix and def:")
+        print(Game.Map.MapMatrix[1][1].UnitInSquare)
+        print("Unit Cords:" + str(unitselected.UnitCoordinates))
+        print("x:" + str(unitselected.UnitCoordinates[0]))
+        print("y:" + str(unitselected.UnitCoordinates[1]))
+        print("Unit via unitcoordinates via map matrix:")
+        print(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].UnitInSquare)
+        print(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].UnitInSquare == Game.Map.MapMatrix[1][1].UnitInSquare)
+        '''
+
+
 
     def AttackUnit():
         print("Doot")
@@ -197,7 +217,7 @@ def GameplayLoop(InputGame):
             Button(pygame.Rect(size[0]-775, size[1]-25, 100,25), str(clickedsquare[0])+','+str(clickedsquare[1]), White, White, screen, 12)
             if unitselected:
                 TextCenterer.ButtonText("Name: " + unitselected.Name + ", Owner: " +unitselected.OwningPlayer.Name + ", HP: " +
-                                        str(unitselected.HitPoints) + ", MP: " + str(unitselected.MovementPoints) + ", Arm: " +
+                                        str(unitselected.HitPoints) + ", MP: " + str(unitselected.CurrentMovementPoints) + ", Arm: " +
                                         str(unitselected.Armor),unitstatsboxupper, Black, 13).draw(screen)
                 TextCenterer.ButtonText("Attack Damage: " + str(unitselected.ReturnWeapon().Damage) + ", Optimal Range: " + str(unitselected.ReturnWeapon().OptimalRange)
                                         + ", Falloff: " +str(unitselected.ReturnWeapon().FalloffRange)+ ", AP: " + str(unitselected.ReturnWeapon().ArmorPen),
@@ -212,11 +232,6 @@ def GameplayLoop(InputGame):
         if UnitsDeployed:
             Button(pygame.Rect(size[0]-675, size[1]-100, 200, 100),"End Turn", Green, White, screen, 14, EndPlayerTurn)
 
-        ##Attack/Move komentonapit
-        if UnitsDeployed:
-            Button(pygame.Rect(25, size[1]-175, 200, 75), "Attack With Unit", Green, White, screen, 14, AttackUnit)
-            Button(pygame.Rect(25, size[1]-100, 200, 75), "Move Selected Unit", Green, White, screen, 14, MoveUnit)
-
         ##Itse Kartta. (size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-200+(100*y), 100, 100
         for y in range(0, ysquarestorender):
             for x in range(0, xsquarestorender):
@@ -229,6 +244,11 @@ def GameplayLoop(InputGame):
                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
                            , screen, 16, SelectUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare))
+
+        ##Attack/Move komentonapit
+        if UnitsDeployed:
+            Button(pygame.Rect(25, size[1]-175, 200, 75), "Attack With Unit", Green, White, screen, 14, AttackUnit)
+            Button(pygame.Rect(25, size[1]-100, 200, 75), "Move Selected Unit", Green, White, screen, 14, MoveUnit)
 
         ##Current Turn boksi:
         Button(pygame.Rect(size[0]-100, 0, 100, 30), "Turn:"+str(Game.Turncounter), White, White, screen, 14)
