@@ -112,6 +112,14 @@ def GameplayLoop(InputGame):
         nonlocal activeplayervar
         nonlocal activeplayer
         activeplayervar += 1
+
+        for player in Game.Players:
+            for unit in player.PlayerUnitList:
+                print(unit)
+                print(unit.MovementPoints)
+                print(unit.CurrentMovementPoints)
+                unit.CurrentMovementPoints = unit.MovementPoints
+
         if activeplayervar < len(Game.Players):
             activeplayer = Game.Players[activeplayervar]
         else:
@@ -121,10 +129,20 @@ def GameplayLoop(InputGame):
 
     def MoveUnit():
         if unitselected:
+            print("Valittu yksikkö/sijainti.")
+            print(unitselected)
+            print(unitselected.UnitCoordinates)
+            print("Valittu ruutu.")
+            print(clickedsquare)
+            print("Klikattu ruutu ja etäisyys yksiköstä siihen.")
+            print(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType)
+            print(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].GetDistance(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]]))
+            print("Funktio Alkaa")
             if unitselected.OwningPlayer == activeplayer:
+                ##print(unitselected.UnitCoordinates)
                 Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
                     MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
-            print(unitselected.MovementPoints)
+                ##print(unitselected.UnitCoordinates)
 
     def AttackUnit():
         print("Doot")

@@ -13,6 +13,7 @@ class Unit(object):
         self.HitPoints = HitPoints
         self.Armor = Armor
         self.MovementPoints = MovementPoints
+        self.CurrentMovementPoints = MovementPoints
         self.Equipment = []
         self.UnitDeployed = False
         self.UnitColor = self.OwningPlayer.PlayerColor
@@ -25,11 +26,6 @@ class Unit(object):
     def RaiseHitPoints(self, num):
         self.HitPoints += num
         return self.HitPoints
-
-
-    def ReduceMovementPoints(self, num):
-        self.MovementPoints -= num
-        return self.MovementPoints
 
     def ReturnWeapon(self):
         for Equip in self.Equipment:
@@ -52,6 +48,7 @@ class Unit(object):
 
             elif  Equip.StatAffected == 3:
                 self.MovementPoints += Equip.Value
+                self.CurrentMovementPoints += Equip.Value
 
 
 def CreateUnit(Player, UniqueID, UnitID):
