@@ -92,10 +92,8 @@ def GameplayLoop(InputGame):
 
     def SelectUnit(unit):
         def ReallySelectUnit():
-            print(unit)
             nonlocal unitselected
             unitselected = unit
-            print(unitselected)
         return ReallySelectUnit
 
     def DeselectUnit():
@@ -120,9 +118,6 @@ def GameplayLoop(InputGame):
 
         for player in Game.Players:
             for unit in player.PlayerUnitList:
-                print(unit)
-                print(unit.MovementPoints)
-                print(unit.CurrentMovementPoints)
                 unit.CurrentMovementPoints = unit.MovementPoints
 
         if activeplayervar < len(Game.Players):
@@ -134,21 +129,29 @@ def GameplayLoop(InputGame):
 
     def MoveUnit():
         if unitselected:
-            print("Valittu yksikkö/sijainti.")
+            '''
+            print("Chosen Unit and its location.")
             print(unitselected)
             print(unitselected.UnitCoordinates)
             print(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].UnitInSquare)
-            print("Valittu ruutu.")
+            print("Clicked square")
             print(clickedsquare)
-            print("Klikattu ruutu ja etäisyys yksiköstä siihen.")
+            print("Type of clicked square and distance to unit square.")
             print(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType)
             print(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].GetDistance(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]]))
-            print("Funktio Alkaa")
+            print("Function begins.")
+            '''
             if unitselected.OwningPlayer == activeplayer:
                 ##print(unitselected.UnitCoordinates)
                 Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
                     MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
                 ##print(unitselected.UnitCoordinates)
+
+            for y in range(0, ysquarestorender):
+                for x in range(0, xsquarestorender):
+                    if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
+                        print("Cord:" + str(x) + ',' + str(y))
+                        print(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare)
         '''
         print("Unit Selected:")
         print(unitselected)

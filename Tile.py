@@ -1,5 +1,5 @@
 class Tile(object):
-    def __init__(self,TileType, TerrainType, y, x):
+    def __init__(self,TileType, TerrainType, x, y):
         self.TileType = TileType
         self.TerrainType = TerrainType
         self.Location = (x,y)
@@ -29,10 +29,13 @@ class Tile(object):
 
     def MoveUnit(self, TargetTile):
         ##Tarkistetaan onko viereinen ruutu.
+        '''
         print("Tööt")
         print(self.Location)
         print(self.UnitInSquare)
+        '''
         if self.UnitInSquare:
+            '''
             print(self.UnitInSquare)
             print("Distance to square:")
             print(self.GetDistance(TargetTile))
@@ -40,6 +43,7 @@ class Tile(object):
             print(self.UnitInSquare.MovementPoints)
             print("Current Movement:")
             print(self.UnitInSquare.CurrentMovementPoints)
+            '''
             if self.GetDistance(TargetTile) == 1 and TargetTile.TileType != 0 and self.UnitInSquare.CurrentMovementPoints > 0:
                 if TargetTile.TileType == 1:
                     print(TargetTile.Location)
@@ -47,8 +51,8 @@ class Tile(object):
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
                     print(self.UnitInSquare.UnitCoordinates)
                     TargetTile.UnitInSquare=self.UnitInSquare
-                    ##self.UnitInSquare = None
-
+                    self.UnitInSquare = None
+                    '''
                     print("After")
                     print(self.UnitInSquare)
                     print("Distance to square:")
@@ -58,6 +62,7 @@ class Tile(object):
                     print("Current Movement:")
                     print(self.UnitInSquare.CurrentMovementPoints)
                     self.UnitInSquare = None
+                    '''
                     return True
 
                 else:
@@ -66,8 +71,8 @@ class Tile(object):
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
                     TargetTile.UnitInSquare=self.UnitInSquare
                     print(self.UnitInSquare.UnitCoordinates)
-                    ##self.UnitInSquare = None
-
+                    self.UnitInSquare = None
+                    '''
                     print("After")
                     print(self.UnitInSquare)
                     print("Distance to square:")
@@ -76,8 +81,8 @@ class Tile(object):
                     print(self.UnitInSquare.MovementPoints)
                     print("Current Movement:")
                     print(self.UnitInSquare.CurrentMovementPoints)
-
                     self.UnitInSquare = None
+                    '''
                     return True
 
     def GetDistance(self, TargetTile):
