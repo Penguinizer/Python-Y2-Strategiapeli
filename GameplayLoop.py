@@ -105,6 +105,7 @@ def GameplayLoop(InputGame):
                     and not Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType == 0:
                 Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare = unit
                 unit.UnitDeployed = True
+                unit.UnitCoordinates = (clickedsquare[0], clickedsquare[1])
         return ReallyDeployUnitInSpace
 
     def EndPlayerTurn():
@@ -119,7 +120,11 @@ def GameplayLoop(InputGame):
             activeplayervar = 0
 
     def MoveUnit():
-        print("Doot")
+        if unitselected:
+            if unitselected.OwningPlayer == activeplayer:
+                Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
+                    MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
+            print(unitselected.MovementPoints)
 
     def AttackUnit():
         print("Doot")
@@ -157,7 +162,7 @@ def GameplayLoop(InputGame):
         if not UnitsDeployed:
             unitplacementiterator = 0
             Button(pygame.Rect(size[0]-475, size[1]-200, 200, 100), Game.Players[deployingplayeriterator].Name + " deploying", White, White, screen, 14)
-            Button(pygame.Rect(size[0]-475, size[1]-100, 200, 100), "Selected Tile: X: "+str(clickedsquare[1])+", Y: "+str(clickedsquare[0]), White, White, screen, 14)
+            Button(pygame.Rect(size[0]-475, size[1]-100, 200, 100), "Selected Tile: X: "+str(clickedsquare[0])+", Y: "+str(clickedsquare[1]), White, White, screen, 14)
             Button(pygame.Rect(25, size[1]-175, 100, 150), "Next Player", Green, White, screen, 14, ConfirmDeployment)
             for unittodeploy in Game.Players[deployingplayeriterator].PlayerUnitList:
                 if unitplacementiterator < deploymentunitspace and not unittodeploy.UnitDeployed:

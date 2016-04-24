@@ -45,12 +45,14 @@ class Tile(object):
 
         if TargetTile.TileType == 1:
             self.UnitInSquare.MovementPoints -= 2
+            self.UnitInSquare.UnitCoordinates = TargetTile.Location
             TargetTile.SetUnitInSquare(self.UnitInSquare)
             self.UnitInSquare = None
             return True
 
         else:
             self.UnitInSquare.MovementPoints -= 1
+            self.UnitInSquare.UnitCoordinates = TargetTile.Location
             TargetTile.SetUnitInSquare(self.UnitInSquare)
             self.UnitInSquare = None
             return True

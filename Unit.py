@@ -16,6 +16,7 @@ class Unit(object):
         self.Equipment = []
         self.UnitDeployed = False
         self.UnitColor = self.OwningPlayer.PlayerColor
+        self.UnitCoordinates = None
 
     def ReduceHitPoints(self, num):
         self.HitPoints -= num
