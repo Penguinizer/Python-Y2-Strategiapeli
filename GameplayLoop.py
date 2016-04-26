@@ -36,6 +36,9 @@ def GameplayLoop(InputGame):
     activeplayervar = 0
     activeplayer = Game.Players[0]
 
+    winningplayer = None
+    gamewon = False
+
     '''
     ##Testiroinaa:
     for player in Game.Players:
@@ -115,6 +118,17 @@ def GameplayLoop(InputGame):
         nonlocal activeplayervar
         nonlocal activeplayer
         activeplayervar += 1
+
+        for player in Game.Players:
+            if len(player.PlayerUnitList) == 0:
+                ##Poistaa pelaajat joiden kaikki yksiköt ovat tuhoutuneet pelistä.
+                ## Eli tässä tapauksessa käytännössä hävinneen pelaajan.
+                Game.Players.remove(player)
+            if len(Game.Players) == 1:
+                nonlocal gamewon
+                nonlocal winningplayer
+                gamewon = True
+                winningplayer = Game.Players[0]
 
         for player in Game.Players:
             for unit in player.PlayerUnitList:
@@ -255,6 +269,11 @@ def GameplayLoop(InputGame):
 
         ##Current Turn boksi:
         Button(pygame.Rect(size[0]-100, 0, 100, 30), "Turn:"+str(Game.Turncounter), White, White, screen, 14)
+
+        ##Winning player boksi:
+        if gamewon:
+            Button(pygame.Rect((size[0]/2)-200, (size[1]/2)-150, 400, 300), "Winning Player:" + winningplayer.Name, White, White, screen, 25)
+            Button(pygame.Rect((size[0]/2)-100, (size[1]/2)+25, 200, 100), "End Game", Green, White, screen, 20, QuitGame)
 
         ##Updatettaa ruudun ainaki guiden mukaan. Ruudun piirto tämän yläpuolelle.
         pygame.display.flip()
