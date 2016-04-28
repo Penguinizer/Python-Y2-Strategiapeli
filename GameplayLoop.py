@@ -39,6 +39,7 @@ def GameplayLoop(InputGame):
     winningplayer = None
     gamewon = False
 
+    attackmode = False
     '''
     ##Testiroinaa:
     for player in Game.Players:
@@ -107,11 +108,19 @@ def GameplayLoop(InputGame):
         def ReallyDeployUnitInSpace():
             nonlocal clickedsquare
             ##Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare
-            if clickedsquare[0]!= None and clickedsquare[1]!= None and Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare == None \
-                    and not Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType == 0:
-                Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare = unit
-                unit.UnitDeployed = True
-                unit.UnitCoordinates = (clickedsquare[0], clickedsquare[1])
+            ##AI deployaa 4 ruutua vasemmasta reunasta, tekoäly 4 oikeasta.
+            if unit.OwningPlayer.isAI == False:
+                if clickedsquare[0]!= None and clickedsquare[1]!= None and Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare == None \
+                        and not Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType == 0 and clickedsquare[0]<=3:
+                    Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare = unit
+                    unit.UnitDeployed = True
+                    unit.UnitCoordinates = (clickedsquare[0], clickedsquare[1])
+            else:
+                if clickedsquare[0]!= None and clickedsquare[1]!= None and Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare == None \
+                        and not Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].TileType == 0 and clickedsquare[0]>=(xmax-4):
+                    Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]].UnitInSquare = unit
+                    unit.UnitDeployed = True
+                    unit.UnitCoordinates = (clickedsquare[0], clickedsquare[1])
         return ReallyDeployUnitInSpace
 
     def EndPlayerTurn():
@@ -133,6 +142,7 @@ def GameplayLoop(InputGame):
         for player in Game.Players:
             for unit in player.PlayerUnitList:
                 unit.CurrentMovementPoints = unit.MovementPoints
+                unit.HasAttacked = False
 
         if activeplayervar < len(Game.Players):
             activeplayer = Game.Players[activeplayervar]
@@ -160,13 +170,13 @@ def GameplayLoop(InputGame):
                 Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
                     MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
                 ##print(unitselected.UnitCoordinates)
-
+            '''
             for y in range(0, ysquarestorender):
                 for x in range(0, xsquarestorender):
                     if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
                         print("Cord:" + str(x) + ',' + str(y))
                         print(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare)
-        '''
+
         print("Unit Selected:")
         print(unitselected)
         print("Unit via map matrix and def:")
@@ -179,10 +189,21 @@ def GameplayLoop(InputGame):
         print(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].UnitInSquare == Game.Map.MapMatrix[1][1].UnitInSquare)
         '''
 
+    def ToggleAttackMode():
+        nonlocal attackmode
+        attackmode = not attackmode
 
-
-    def AttackUnit():
-        print("Doot")
+    def AttackWithUnit(targettile):
+        def ReallyAttackWithUnit():
+            nonlocal unitselected
+            if unitselected:
+                if unitselected != targettile.UnitInSquare and unitselected.OwningPlayer == activeplayer and not unitselected.HasAttacked:
+                    ##AttackUnit(OwnTile, TargetTile):
+                    ##print(targettile)
+                    ##print(targettile.UnitInSquare)
+                    Unit.AttackUnit(Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]], targettile)
+                    unitselected.HasAttacked = True
+        return ReallyAttackWithUnit
 
     while gashunk:
         for event in pygame.event.get():
@@ -250,21 +271,38 @@ def GameplayLoop(InputGame):
             Button(pygame.Rect(size[0]-675, size[1]-100, 200, 100),"End Turn", Green, White, screen, 14, EndPlayerTurn)
 
         ##Itse Kartta. (size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-200+(100*y), 100, 100
-        for y in range(0, ysquarestorender):
-            for x in range(0, xsquarestorender):
-                Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-100+(100*y), 100, 100),
-                       str(x+xmapscrollvar)+','+str(y+ymapscrollvar), Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color,
-                       Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color, screen, 25,
-                       ReturnClickedSquare(x+xmapscrollvar, y+ymapscrollvar))
-                if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
-                    Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
-                           Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
-                           Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
-                           , screen, 16, SelectUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare))
+        if attackmode:
+            for y in range(0, ysquarestorender):
+                for x in range(0, xsquarestorender):
+                    Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-100+(100*y), 100, 100),
+                        str(x+xmapscrollvar)+','+str(y+ymapscrollvar), Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color,
+                        Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color, screen, 25,
+                        ReturnClickedSquare(x+xmapscrollvar, y+ymapscrollvar))
+                    if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
+                        Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
+                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
+                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
+                            , screen, 16, AttackWithUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar]))
+        else:
+            for y in range(0, ysquarestorender):
+                for x in range(0, xsquarestorender):
+                    Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x), (size[1]/2)-(yspace*50)-100+(100*y), 100, 100),
+                        str(x+xmapscrollvar)+','+str(y+ymapscrollvar), Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color,
+                        Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].Color, screen, 25,
+                        ReturnClickedSquare(x+xmapscrollvar, y+ymapscrollvar))
+                    if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
+                        Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
+                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
+                            Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
+                            , screen, 16, SelectUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare))
 
         ##Attack/Move komentonapit
         if UnitsDeployed:
-            Button(pygame.Rect(25, size[1]-175, 200, 75), "Attack With Unit", Green, White, screen, 14, AttackUnit)
+            if attackmode:
+                Button(pygame.Rect(25, size[1]-175, 200, 75), "Attack Mode Off", Green, Green, screen, 14, ToggleAttackMode)
+            else:
+                Button(pygame.Rect(25, size[1]-175, 200, 75), "Attack Mode On", Green, White, screen, 14, ToggleAttackMode)
+
             Button(pygame.Rect(25, size[1]-100, 200, 75), "Move Selected Unit", Green, White, screen, 14, MoveUnit)
 
         ##Current Turn boksi:

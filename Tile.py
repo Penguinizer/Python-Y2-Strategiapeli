@@ -46,10 +46,10 @@ class Tile(object):
             '''
             if self.GetDistance(TargetTile) == 1 and TargetTile.TileType != 0 and self.UnitInSquare.CurrentMovementPoints > 0:
                 if TargetTile.TileType == 1:
-                    print(TargetTile.Location)
+                    ##print(TargetTile.Location)
                     self.UnitInSquare.CurrentMovementPoints -= 2
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
-                    print(self.UnitInSquare.UnitCoordinates)
+                    ##print(self.UnitInSquare.UnitCoordinates)
                     TargetTile.UnitInSquare=self.UnitInSquare
                     self.UnitInSquare = None
                     '''
@@ -66,11 +66,11 @@ class Tile(object):
                     return True
 
                 else:
-                    print(TargetTile.Location)
+                    ##print(TargetTile.Location)
                     self.UnitInSquare.CurrentMovementPoints -= 1
                     self.UnitInSquare.UnitCoordinates = TargetTile.Location
                     TargetTile.UnitInSquare=self.UnitInSquare
-                    print(self.UnitInSquare.UnitCoordinates)
+                    ##print(self.UnitInSquare.UnitCoordinates)
                     self.UnitInSquare = None
                     '''
                     print("After")

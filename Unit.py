@@ -18,6 +18,7 @@ class Unit(object):
         self.UnitDeployed = False
         self.UnitColor = self.OwningPlayer.PlayerColor
         self.UnitCoordinates = None
+        self.HasAttacked = False
 
     def ReduceHitPoints(self, num):
         self.HitPoints -= num
@@ -69,25 +70,45 @@ def AttackUnit(OwnTile, TargetTile):
         accuracymodifier = TargetTile.AccuracyModifier
 
         distance = OwnTile.GetDistance(TargetTile)
-
-        if distance < optimalrange:
-            unmoddamage = round(damage* (0.7 - accuracymodifier + (random.random()*20)))
+        '''
+        print("Damage:" + str(damage))
+        print("Distance:" + str(distance))
+        print("Armorpen:" + str(armorpen))
+        print("Optimal: " +str(optimalrange))
+        print("Falloff: " + str(falloffrange))
+        print("Accuracy: " + str(accuracymodifier))
+        print("Target HP: " + str(TargetTile.UnitInSquare.HitPoints))
+        '''
+        if distance <= optimalrange:
+            unmoddamage = abs(round(damage * ((0.7 * accuracymodifier + (random.random()*20))/100)))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
-            TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
+            TargetTile.UnitInSquare.ReduceHitPoints(damagedealt)
 
             if TargetTile.UnitInSquare.HitPoints <= 0:
-                TargetTile.UnitInSquare.Player.PlayerUnitList.remove(TargetTile.UnitInSquare)
+                TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
+            '''
+            print("Unmodded Damage: " + str(unmoddamage))
+            print("Damage Dealt: " + str(damagedealt))
+            print("Ding dong 1")
+            print("Target health:" + str(TargetTile.UnitInSquare.HitPoints))
+            '''
 
-        elif optimalrange < distance < falloffrange:
-            unmoddamage = round(damage* ((0.5) - accuracymodifier + (random.random()*20)))
+        elif optimalrange < distance <= falloffrange:
+            unmoddamage = abs(round(damage * ((0.5) * accuracymodifier + (random.random()*20))))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
-            TargetTile.UnitInSquare.ReduceHitpoints(damagedealt)
+            TargetTile.UnitInSquare.ReduceHitPoints(damagedealt)
 
             if TargetTile.UnitInSquare.HitPoints <= 0:
-                TargetTile.UnitInSquare.Player.PlayerUnitList.remove(TargetTile.UnitInSquare)
+                TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
 
+            '''
+            print("Unmodded Damage: " + str(unmoddamage))
+            print("Damage Dealt: " + str(damagedealt))
+            print("Ding Dong 2")
+            print("Target health:" + str(TargetTile.UnitInSquare.HitPoints))
+            '''
 
         else:
             print("Out of range. No damage dealt.")
