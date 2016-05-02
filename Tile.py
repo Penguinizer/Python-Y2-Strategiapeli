@@ -44,7 +44,8 @@ class Tile(object):
             print("Current Movement:")
             print(self.UnitInSquare.CurrentMovementPoints)
             '''
-            if self.GetDistance(TargetTile) == 1 and TargetTile.TileType != 0 and self.UnitInSquare.CurrentMovementPoints > 0:
+            if self.GetDistance(TargetTile) == 1 and TargetTile.TileType != 0 and self.UnitInSquare.CurrentMovementPoints > 0\
+                    and TargetTile.UnitInSquare == None:
                 if TargetTile.TileType == 1:
                     ##print(TargetTile.Location)
                     self.UnitInSquare.CurrentMovementPoints -= 2

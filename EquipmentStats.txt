@@ -1,6 +1,6 @@
-{"Name" : "Test Weapon 1", "Cost" : 0, "ID" : 1, "Type" : "Weapon", "Optimal Range" : 4 , "Falloff Range" : 8, "Damage" : 15 , "Armor Penetration" : 2}
-{"Name" : "Test Weapon 2", "Cost" : 10, "ID" : 2, "Type" : "Weapon", "Optimal Range" : 5 , "Falloff Range" : 10, "Damage" : 20 , "Armor Penetration" : 4}
-{"Name" : "Test Weapon 3", "Cost" : 30, "ID" : 3, "Type" : "Weapon", "Optimal Range" : 7 , "Falloff Range" : 15, "Damage" : 25 , "Armor Penetration" : 8}
-{"Name" : "Test HP Gear" , "Cost" : 10 , "ID" : 4, "Type" : "Gear" , "Stat Affected" : 1, "Value" : 10}
-{"Name" : "Test Armor Gear" , "Cost" : 50 , "ID" : 5, "Type" : "Gear" , "Stat Affected" : 2, "Value" : 5}
-{"Name" : "Test MP Gear" , "Cost" : 20 , "ID" : 6, "Type" : "Gear" , "Stat Affected" : 3, "Value" : 2}
+{"Name" : "Mark 3 Rifle", "Cost" : 0, "ID" : 1, "Type" : "Weapon", "Optimal Range" : 4 , "Falloff Range" : 8, "Damage" : 15 , "Armor Penetration" : 2}
+{"Name" : "Mark 9 Heavy Rifle", "Cost" : 10, "ID" : 2, "Type" : "Weapon", "Optimal Range" : 5 , "Falloff Range" : 10, "Damage" : 20 , "Armor Penetration" : 4}
+{"Name" : "Zeus Antimaterial Rifle", "Cost" : 30, "ID" : 3, "Type" : "Weapon", "Optimal Range" : 7 , "Falloff Range" : 15, "Damage" : 25 , "Armor Penetration" : 8}
+{"Name" : "Autodoctor Unit" , "Cost" : 10 , "ID" : 4, "Type" : "Gear" , "Stat Affected" : 1, "Value" : 10}
+{"Name" : "Enhanced Carapace Armor" , "Cost" : 50 , "ID" : 5, "Type" : "Gear" , "Stat Affected" : 2, "Value" : 5}
+{"Name" : "Strider Movement Frames" , "Cost" : 20 , "ID" : 6, "Type" : "Gear" , "Stat Affected" : 3, "Value" : 2}

@@ -146,11 +146,11 @@ def UnitSelection(InputGame):
 
             for var in range(3):
                 Button (pygame.Rect(menuxy[0], menuxy[1]+75+var*100, 700, 100), gearstrings[var + menuscrollvariable]
-                       , Green, White, screen, 25, AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable], pickingplayer))
+                       , Green, White, screen, 20, AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable], pickingplayer))
                 ##AddEquipToUnit(newunit, Game.BaselineEquipmentArray[var+menuscrollvariable])
 
             Button(pygame.Rect(menuxy[0], menuxy[1]-75, 700, 75), "Confirm Unit Equipment", Green, White, screen, 25, ConfirmEquip(newunit, pickingplayer))
-
+        ##Piirtää yksikön valinta boksit.
         elif PickingGear == False:
             unitstrings = []
             for unit in Game.BaselineUnitArray:
@@ -158,7 +158,7 @@ def UnitSelection(InputGame):
                                + str(unit.HitPoints) + ", Armor: " + str(unit.Armor) + ", MP: " + str(unit.MovementPoints))
             for butts in range(3):
                 Button(pygame.Rect(menuxy[0], menuxy[1]+75+butts*100, 700, 100), unitstrings[butts + menuscrollvariable]
-                       ,Green, White, screen, 25, AddUnitSelectEquip(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
+                       ,Green, White, screen, 20, AddUnitSelectEquip(Game.BaselineUnitArray[butts+menuscrollvariable], pickingplayer))
 
         ##Confirm valinnat nappi
         if PickingGear == False:

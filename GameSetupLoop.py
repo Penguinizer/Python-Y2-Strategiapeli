@@ -132,15 +132,15 @@ def GameSetup():
 
         ##Napit kartan setuppia varten.
         elif not MapAdded and PointsSet and Playersadded:
-            xincrease = pygame.Rect(menuxy[0]+225, menuxy[1]+100, 75, 75)
-            xcurrent = pygame.Rect(menuxy[0]+300,menuxy[1]+100, 100, 75)
-            xdecrease = pygame.Rect(menuxy[0]+400, menuxy[1]+100, 75, 75)
-            yincrease = pygame.Rect(menuxy[0]+225, menuxy[1]+200, 75, 75)
-            ycurrent = pygame.Rect(menuxy[0]+300, menuxy[1]+200, 100, 75)
-            ydecrease = pygame.Rect(menuxy[0]+400, menuxy[1]+200, 75, 75)
+            xincrease = pygame.Rect(menuxy[0]+225, menuxy[1]+200, 75, 75)
+            xcurrent = pygame.Rect(menuxy[0]+300,menuxy[1]+200, 100, 75)
+            xdecrease = pygame.Rect(menuxy[0]+400, menuxy[1]+200, 75, 75)
+            yincrease = pygame.Rect(menuxy[0]+225, menuxy[1]+300, 75, 75)
+            ycurrent = pygame.Rect(menuxy[0]+300, menuxy[1]+300, 100, 75)
+            ydecrease = pygame.Rect(menuxy[0]+400, menuxy[1]+300, 75, 75)
             #terraintypefirst = pygame.Rect(menuxy[0]+300, menuxy[1]+100, 200, 75)
             #terraintypesecond = pygame.Rect(menuxy[0]+300, menuxy[1]+200, 200, 75)
-            confirmmap = pygame.Rect(menuxy[0]+225, menuxy[1]+300, 250, 75)
+            confirmmap = pygame.Rect(menuxy[0]+225, menuxy[1]+400, 250, 75)
 
         ##Piirto koodi. Ensiksi ruutu valkoiseksi. Sitte scheissea ruutuun. Kaiken pitäis mennä fillin alapuolelle.
         screen.fill(White)
@@ -166,8 +166,11 @@ def GameSetup():
         elif not PointsSet and Playersadded:
             for k in range(pointsamountsvar):
                 Button(pointsrects[k], str(300+k*100) + "Points", Green, White, screen, 25, SetPoints((300+k*100), NewGame))
+
+            Button(pygame.Rect((size[0]/2)-250, menuxy[1]+300, 500, 75), "Choose the amount of points allotted for units.", White, White, screen, 20)
         ##Napit kartan lisäämistä varten.
         elif not MapAdded and PointsSet and Playersadded:
+            Button(pygame.Rect((size[0]/2)-200,menuxy[1]+100, 400,75), "Choose the size of the map.",White, White, screen, 25)
             Button(xincrease, "+ X", Green, White, screen, 25, XIncrease)
             Button(xdecrease, "- X", Green, White, screen, 25, XDecrease)
             Button(xcurrent, "X: "+str(Xvar), White, White, screen, 25)

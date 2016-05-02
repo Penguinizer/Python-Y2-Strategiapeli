@@ -15,6 +15,8 @@ Paina ruutua kartalla, ja sen jälkeen yksikköä alapalkissa. Tämä deployaa kyseis
 Ihmispelaaja voi deployaa 4 ruutua kartan vasemmasta reunasta. Tekoäly 4 kartan oikeasta.
 Tee sama tekoäly pelaajalle. Kun kummankin pelaajan deployment on tehty, peli menee gameplay moodiin.
 
+Karttaa voi scrollata käyttäen ruudun ala-oikeassa kulmassa olevia nappeja.
+
 Keltainen ruutu on avoin territory. 0 coveria, ja 1 movement point per liike.
 Kevyen vihreä on light terrain.  25% coveria, 2 movement pointtia per liike.
 Tumman vihreä on heavy terrain. 50% coveria, 3 movement pointtia per liike.
@@ -26,3 +28,5 @@ Hyökätäksesi. Valitse yksikkö, tämän jälkeen laita Attack Mode päälle, ja clicka
 Yksikkö voi hyökätä vain kerran per vuoro. Sen jälkeen kun olet valmis, paina end turn nappia ja tekoäly pelaaja tekee oman vuoronsa.
 
 Sitten kun toisen pelaajan kaikki yksiköt ovat kuolleet, peli loppuu ja voittaja julkistetaan.
+
+Valittu yksikkö on highlightattu muuttamalla sen blokin väri kultaiseksi.
