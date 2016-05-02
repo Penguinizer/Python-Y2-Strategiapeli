@@ -143,6 +143,8 @@ def GameplayLoop(InputGame):
             for unit in player.PlayerUnitList:
                 unit.CurrentMovementPoints = unit.MovementPoints
                 unit.HasAttacked = False
+                if unit.UnitCoordinates == None:
+                    player.PlayerUnitList.remove(unit)
 
         if activeplayervar < len(Game.Players):
             activeplayer = Game.Players[activeplayervar]
@@ -210,8 +212,149 @@ def GameplayLoop(InputGame):
             if event.type == pygame.QUIT: ##Peli sulkeutuu painamalla closea.
                 gashunk = False
 
-        ##Pelilogiikka roina tämän alle.
+        ##Tekoäly roina tän alle.
+        if activeplayer.isAI and not gamewon:
+            for aiunit in activeplayer.PlayerUnitList:
+                print("Acting Unit: " + aiunit.Name + ", " +str(aiunit.UniqueID))
+                ##Painotetaan eri ruutuja jotta päätetään mihin liikutaan.
+                donemoving = False
+                while aiunit.CurrentMovementPoints > 0 and not donemoving:
+                    csvar= 0
+                    nvar = 0
+                    svar= 0
+                    wvar= 0
+                    evar = 0
 
+                    for player in Game.Players:
+                        if not player.isAI:
+                            for playerunit in player.PlayerUnitList:
+                                ##Käydään käsiksi ruutuihin pitkää reittiä. Näyttää monimutkasemmalta kun on.
+                                ##Jos vihollinen on optimaalisella etäisyydellä, halutaan varmaan pysyä hyvässä paikassa.
+                                if Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].GetDistance(Game.Map.MapMatrix[playerunit.UnitCoordinates[0]][playerunit.UnitCoordinates[1]]) <= aiunit.ReturnWeapon().OptimalRange:
+                                    csvar += 2
+
+                                if aiunit.UnitCoordinates[0] < playerunit.UnitCoordinates[0]:
+                                    evar += 1
+                                elif aiunit.UnitCoordinates[0] > playerunit.UnitCoordinates[0]:
+                                    wvar += 1
+
+                                if aiunit.UnitCoordinates[1] < playerunit.UnitCoordinates[1]:
+                                    nvar += 1
+                                elif aiunit.UnitCoordinates[1] > playerunit.UnitCoordinates[1]:
+                                    svar += 1
+
+                    ##Tarkastetaan minkälaista terrainia ruudulla on. Lisätään se painostusarvoon. 3-tile.tiletype
+                    '''
+                    print(aiunit.UnitCoordinates)
+                    print("Maxes")
+                    print(xmax)
+                    print(ymax)
+                    '''
+                    csquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]]
+                    if csquare:
+                        if csquare.TileType != 0:
+                            csvar += 3 - csquare.TileType
+
+                    if aiunit.UnitCoordinates[0] > 0 and aiunit.UnitCoordinates[1] > 0:
+                        nwsquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]-1][aiunit.UnitCoordinates[1]-1]
+                        if nwsquare:
+                            if nwsquare.TileType != 0:
+                                nvar += 3 - nwsquare.TileType
+                                wvar += 3 - nwsquare.TileType
+                    if aiunit.UnitCoordinates[1] > 0:
+                        nsquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]-1]
+                        if nsquare:
+                            if nsquare.TileType != 0:
+                                nvar += 3 - nsquare.TileType
+
+                    if aiunit.UnitCoordinates[0] > 0:
+                        wsquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]-1][aiunit.UnitCoordinates[1]]
+                        if wsquare:
+                            if wsquare.TileType != 0:
+                                wvar += 3 - wsquare.TileType
+
+                    if aiunit.UnitCoordinates[0] < (xmax-1) and aiunit.UnitCoordinates[1] > 0:
+                        nesquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]+1][aiunit.UnitCoordinates[1]-1]
+                        if nesquare:
+                            if nesquare.TileType != 0:
+                                nvar += 3 - nesquare.TileType
+                                evar += 3 - nesquare.TileType
+
+                    if aiunit.UnitCoordinates[0] < (xmax-1):
+                        esquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]+1][aiunit.UnitCoordinates[1]]
+                        if esquare:
+                            if esquare.TileType != 0:
+                                evar += 3 - esquare.TileType
+
+                    if aiunit.UnitCoordinates[0] < (xmax-1) and aiunit.UnitCoordinates[1] < (ymax-1):
+                        sesquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]+1][aiunit.UnitCoordinates[1]+1]
+                        if sesquare:
+                            if sesquare.TileType != 0:
+                                evar += 3 - sesquare.TileType
+                                svar += 3 - sesquare.TileType
+
+                    if aiunit.UnitCoordinates[0] > 0 and aiunit.UnitCoordinates[1] < (ymax-1):
+                        swsquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]-1][aiunit.UnitCoordinates[1]+1]
+                        if swsquare:
+                            if swsquare.TileType != 0:
+                                wvar += 3 - swsquare.TileType
+                                svar += 3 - swsquare.TileType
+
+                    if aiunit.UnitCoordinates[1] < (ymax-1):
+                        ssquare = Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]+1]
+                        if ssquare:
+                            if ssquare.TileType != 0:
+                                svar += 3 - ssquare.TileType
+                    ##Käytetään tietoa ja liikutaan suuntaan jolla on isoin arvo.
+                    ##tile.moveunit(targettile)
+                    print("Square variables: Current: " + str(csvar) + ", N: " + str(nvar) + ", E: " + str(evar) + ", S: "
+                          + str(svar) + ", W: " + str(wvar))
+
+                    squarevars = [("cs", csvar),("n", nvar),("e", evar),("s", svar), ("w", wvar)]
+                    maxsquare = max(squarevars, key = lambda t: t[1])
+                    print(maxsquare)
+                    if maxsquare[0] == "cs":
+                        print("Staying in place.")
+                        donemoving = True
+
+                    elif maxsquare[0] == "n":
+                        print("Moving north.")
+                        Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].MoveUnit(Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]-1])
+
+                    elif maxsquare[0] == "e":
+                        print("Moving east.")
+                        Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].MoveUnit(Game.Map.MapMatrix[aiunit.UnitCoordinates[0]+1][aiunit.UnitCoordinates[1]])
+
+                    elif maxsquare[0] == "s":
+                        print("Moving south")
+                        Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].MoveUnit(Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]+1])
+
+                    elif maxsquare[0] == "w":
+                        print("Moving west")
+                        Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].MoveUnit(Game.Map.MapMatrix[aiunit.UnitCoordinates[0]-1][aiunit.UnitCoordinates[1]])
+
+                    if aiunit.CurrentMovementPoints <= 1:
+                        donemoving = True
+
+                ##Hankitaan etäisyys kaikkiin pelaajan yksiköihin ja sitten hyökätään lähimpään.
+                distancestoenemies = []
+                for player in Game.Players:
+                    if not player.isAI:
+                        for playerunit in player.PlayerUnitList:
+                            distancestoenemies.append((Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].GetDistance(Game.Map.MapMatrix[playerunit.UnitCoordinates[0]][playerunit.UnitCoordinates[1]]),playerunit))
+                if distancestoenemies:
+                    ##print(distancestoenemies)
+                    ##print(min(distancestoenemies, key = lambda t: t[0]))
+                    print("Attacking closest enemy: " + min(distancestoenemies, key = lambda t: t[0])[1].Name)
+                    Unit.AttackUnit(Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]], Game.Map.MapMatrix[min(distancestoenemies, key = lambda t: t[0])[1].UnitCoordinates[0]][min(distancestoenemies, key = lambda t: t[0])[1].UnitCoordinates[1]])
+                '''
+                print("Enemies and Distances:")
+                print(distancestoenemies)
+                print("Closest Enemy: ")
+                print(min(distancestoenemies))
+                '''
+
+            EndPlayerTurn()
 
         ##Piirto koodi. Ensiksi ruutu valkoiseksi. Sitte scheissea ruutuun. Kaiken pitäis mennä fillin alapuolelle.
         screen.fill(White)

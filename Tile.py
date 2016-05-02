@@ -1,5 +1,5 @@
 class Tile(object):
-    def __init__(self,TileType, TerrainType, x, y):
+    def __init__(self, TileType, TerrainType, x, y):
         self.TileType = TileType
         self.TerrainType = TerrainType
         self.Location = (x,y)

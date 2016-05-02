@@ -78,15 +78,19 @@ def AttackUnit(OwnTile, TargetTile):
         print("Falloff: " + str(falloffrange))
         print("Accuracy: " + str(accuracymodifier))
         print("Target HP: " + str(TargetTile.UnitInSquare.HitPoints))
+        print(((0.7 * accuracymodifier + (random.random()*20))/100))
         '''
         if distance <= optimalrange:
-            unmoddamage = abs(round(damage * ((0.7 * accuracymodifier + (random.random()*20))/100)))
+            unmoddamage = abs(round(damage*((0.7 * accuracymodifier + (random.random()*20))/100)))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
             TargetTile.UnitInSquare.ReduceHitPoints(damagedealt)
+            print("Damage dealt: " + str(damagedealt))
 
             if TargetTile.UnitInSquare.HitPoints <= 0:
                 TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
+                print("Target Dead")
+
             '''
             print("Unmodded Damage: " + str(unmoddamage))
             print("Damage Dealt: " + str(damagedealt))
@@ -95,13 +99,15 @@ def AttackUnit(OwnTile, TargetTile):
             '''
 
         elif optimalrange < distance <= falloffrange:
-            unmoddamage = abs(round(damage * ((0.5) * accuracymodifier + (random.random()*20))))
+            unmoddamage = abs(round(damage*((0.7 * accuracymodifier + (random.random()*20))/100)))
             damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
             TargetTile.UnitInSquare.ReduceHitPoints(damagedealt)
+            print("Damage dealt: " + str(damagedealt))
 
             if TargetTile.UnitInSquare.HitPoints <= 0:
                 TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
+                print("Target Dead")
 
             '''
             print("Unmodded Damage: " + str(unmoddamage))
