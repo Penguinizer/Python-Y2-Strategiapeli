@@ -4,6 +4,7 @@ from ButtonStuff import Button
 import FileReader
 import Unit
 
+##Funktio sisältää yksikköjen ja niitten equipmentin valinnan mahdollistavan koodin.
 def UnitSelection(InputGame):
     Game = InputGame
     clock = pygame.time.Clock()

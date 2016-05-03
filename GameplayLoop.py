@@ -110,7 +110,11 @@ def GameplayLoop(InputGame):
     def EndPlayerTurn():
         nonlocal activeplayervar
         nonlocal activeplayer
+        nonlocal  unitselected
         activeplayervar += 1
+
+        if not unitselected in activeplayer.PlayerUnitList:
+            unitselected = None
 
         for player in Game.Players:
             if len(player.PlayerUnitList) == 0:
@@ -152,7 +156,7 @@ def GameplayLoop(InputGame):
     def AttackWithUnit(targettile):
         def ReallyAttackWithUnit():
             nonlocal unitselected
-            if unitselected:
+            if unitselected and (unitselected in activeplayer.PlayerUnitList):
                 if unitselected != targettile.UnitInSquare and unitselected.OwningPlayer == activeplayer and not unitselected.HasAttacked:
                     ##AttackUnit(OwnTile, TargetTile):
                     ##print(targettile)
@@ -331,8 +335,12 @@ def GameplayLoop(InputGame):
             for unittodeploy in Game.Players[deployingplayeriterator].PlayerUnitList:
                 if unitplacementiterator < deploymentunitspace and not unittodeploy.UnitDeployed:
                     Button(pygame.Rect((150+unitplacementiterator*100), (size[1]-200), 100, 100), unittodeploy.Name, Green, unittodeploy.UnitColor, screen, 14, DeployUnitInSpace(unittodeploy))
+                    Button(pygame.Rect((150+unitplacementiterator*100), (size[1]-120), 100, 20), "HP: " + str(unittodeploy.HitPoints) + ", MP: " + str(unittodeploy.CurrentMovementPoints),
+                                        Green, unittodeploy.UnitColor, screen, 12)
                 elif not unittodeploy.UnitDeployed:
                     Button(pygame.Rect((-250+unitplacementiterator*100), (size[1]-100), 100, 100), unittodeploy.Name, Green, unittodeploy.UnitColor, screen, 14, DeployUnitInSpace(unittodeploy))
+                    Button(pygame.Rect((-250+unitplacementiterator*100), (size[1]-20), 100, 20), "HP: " + str(unittodeploy.HitPoints) + ", MP: " + str(unittodeploy.CurrentMovementPoints),
+                                        Green, unittodeploy.UnitColor, screen, 12)
                 unitplacementiterator += 1
 
         #Unit statseja displayavaa boksi
@@ -347,8 +355,8 @@ def GameplayLoop(InputGame):
                                         str(unitselected.HitPoints) + ", MP: " + str(unitselected.CurrentMovementPoints) + ", Arm: " +
                                         str(unitselected.Armor),unitstatsboxupper, Black, 13).draw(screen)
                 TextCenterer.ButtonText("Attack Damage: " + str(unitselected.ReturnWeapon().Damage) + ", Optimal Range: " + str(unitselected.ReturnWeapon().OptimalRange)
-                                        + ", Falloff: " +str(unitselected.ReturnWeapon().FalloffRange)+ ", AP: " + str(unitselected.ReturnWeapon().ArmorPen),
-                                        unitstatsboxlower, Black, 13).draw(screen)
+                                        + ", Falloff: " +str(unitselected.ReturnWeapon().FalloffRange)+ ", AP: " + str(unitselected.ReturnWeapon().ArmorPen)+ ", Can Attack: "
+                                        + str(not unitselected.HasAttacked) ,unitstatsboxlower, Black, 13).draw(screen)
 
         ##Aktiivisen pelaajan vuoroindikaattori:
         if UnitsDeployed:
@@ -374,12 +382,22 @@ def GameplayLoop(InputGame):
                         Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
                             (218,165,32), screen, 12, AttackWithUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar]))
+                        if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
+                            Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+70, 80, 20),
+                                "HP: "+ str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.HitPoints) +
+                                ", MP: " + str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.CurrentMovementPoints),
+                                Green, (218,165,32), screen, 12)
                     ##Yksikön normaali renderointi.
                     elif Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
                         Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
                             , screen, 12, AttackWithUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar]))
+                        if Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
+                            Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+70, 80, 20),
+                                "HP: "+ str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.HitPoints) +
+                                ", MP: " + str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.CurrentMovementPoints),
+                                Green,  Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor, screen, 12)
         ##normaali kartanpiirto.
         else:
             for y in range(0, ysquarestorender):
@@ -394,12 +412,20 @@ def GameplayLoop(InputGame):
                         Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
                             (218,165,32), screen, 12, SelectUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare))
+                        Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+70, 80, 20),
+                               "HP: "+ str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.HitPoints) +
+                               ", MP: " + str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.CurrentMovementPoints),
+                               Green, (218,165,32), screen, 12)
                     ##Piirtää yksikön pelaajan väriseksi jos sitä ei ole.
                     elif Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare:
                         Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+10, 80, 80),
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.Name, Green,
                             Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor
                             , screen, 12, SelectUnit(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare))
+                        Button(pygame.Rect((size[0]/2)-(xspace*50)+(100*x)+10, (size[1]/2)-(yspace*50)-100+(100*y)+70, 80, 20),
+                               "HP: "+ str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.HitPoints) +
+                               ", MP: " + str(Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.CurrentMovementPoints),
+                               Green, Game.Map.MapMatrix[x+xmapscrollvar][y+ymapscrollvar].UnitInSquare.UnitColor, screen, 12)
 
         ##Attack/Move komentonapit
         if UnitsDeployed:

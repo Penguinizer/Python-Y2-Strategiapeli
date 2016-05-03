@@ -3,6 +3,7 @@ from ButtonStuff import Button
 import FileReader
 import time
 
+##Options menu.
 def OptionsLoop():
     ## Initialisoidaan kaikki uudestaan koska on kyseessä uusi looppi. Tehdään kaikki uudestaan koska ei saada lähetettyä eteenpäin.
     clock = pygame.time.Clock()

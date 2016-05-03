@@ -7,6 +7,7 @@ from Player import Player
 from Map import Map
 import random
 
+##Funktio asettaa pelin asetukset, esim mapin koon ja yksiköihin käytettävien pisteiden määrän.
 def GameSetup():
     clock = pygame.time.Clock()
     size = FileReader.Filereader("Config.txt", "ConfigSize")[0] ##Vaikka ton voi asettaa mielivaltasesti. Liian pieni arvo räjäyttää kaiken naamaan.
