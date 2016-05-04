@@ -83,14 +83,6 @@ def GameSetup():
         if Yvar > 8:
             Yvar -= 1
 
-    '''
-    def SetTerrain(var):
-        def ActuallySetTerrain():
-            nonlocal TerrainType
-            TerrainType = var
-        return ActuallySetTerrain()
-    '''
-
     def ConfirmMap():
         if 10 <= Xvar < 50  and 8 <= Yvar < 50:
             nonlocal NewGame
@@ -139,8 +131,6 @@ def GameSetup():
             yincrease = pygame.Rect(menuxy[0]+225, menuxy[1]+300, 75, 75)
             ycurrent = pygame.Rect(menuxy[0]+300, menuxy[1]+300, 100, 75)
             ydecrease = pygame.Rect(menuxy[0]+400, menuxy[1]+300, 75, 75)
-            #terraintypefirst = pygame.Rect(menuxy[0]+300, menuxy[1]+100, 200, 75)
-            #terraintypesecond = pygame.Rect(menuxy[0]+300, menuxy[1]+200, 200, 75)
             confirmmap = pygame.Rect(menuxy[0]+225, menuxy[1]+400, 250, 75)
 
         ##Piirto koodi. Ensiksi ruutu valkoiseksi. Sitte scheissea ruutuun. Kaiken pitäis mennä fillin alapuolelle.
@@ -178,8 +168,6 @@ def GameSetup():
             Button(yincrease, "+ Y", Green, White, screen, 25, YIncrease)
             Button(ydecrease, "- Y", Green, White, screen, 25, YDecrease)
             Button(ycurrent, "Y: "+str(Yvar),White, White, screen, 25)
-            #Button(terraintypefirst, "Terrain Type: Hot", Green, White, screen, 25, SetTerrain("Hot"))
-            #Button(terraintypesecond, "Terrain Type: Cold", Green, White, screen, 25, SetTerrain("Cold"))
             Button(confirmmap, "Confirm Map", Green, White, screen, 25, ConfirmMap)
 
         else:

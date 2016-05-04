@@ -193,7 +193,8 @@ def GameplayLoop(InputGame):
                             for playerunit in player.PlayerUnitList:
                                 ##Käydään käsiksi ruutuihin pitkää reittiä. Näyttää monimutkasemmalta kun on.
                                 ##Jos vihollinen on optimaalisella etäisyydellä, halutaan varmaan pysyä hyvässä paikassa.
-                                if Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].GetDistance(Game.Map.MapMatrix[playerunit.UnitCoordinates[0]][playerunit.UnitCoordinates[1]]) <= aiunit.ReturnWeapon().OptimalRange:
+                                if Game.Map.MapMatrix[aiunit.UnitCoordinates[0]][aiunit.UnitCoordinates[1]].GetDistance(Game.Map.MapMatrix[playerunit.UnitCoordinates[0]][playerunit.UnitCoordinates[1]])\
+                                        <= aiunit.ReturnWeapon().OptimalRange:
                                     csvar += 2
 
                                 if aiunit.UnitCoordinates[0] < playerunit.UnitCoordinates[0]:

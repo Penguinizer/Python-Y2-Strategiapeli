@@ -24,10 +24,6 @@ class Unit(object):
         self.HitPoints -= num
         return self.HitPoints
 
-    def RaiseHitPoints(self, num):
-        self.HitPoints += num
-        return self.HitPoints
-
     def ReturnWeapon(self):
         for Equip in self.Equipment:
             if Equip.Type == "Weapon":
@@ -70,19 +66,10 @@ def AttackUnit(OwnTile, TargetTile):
         accuracymodifier = TargetTile.AccuracyModifier
 
         distance = OwnTile.GetDistance(TargetTile)
-        '''
-        print("Damage:" + str(damage))
-        print("Distance:" + str(distance))
-        print("Armorpen:" + str(armorpen))
-        print("Optimal: " +str(optimalrange))
-        print("Falloff: " + str(falloffrange))
-        print("Accuracy: " + str(accuracymodifier))
-        print("Target HP: " + str(TargetTile.UnitInSquare.HitPoints))
-        print(((0.7 * accuracymodifier + (random.random()*20))/100))
-        '''
+
         if distance <= optimalrange:
             unmoddamage = abs(round(damage*((0.7 * accuracymodifier + (random.random()*20))/100)))
-            damagedealt = unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen))
+            damagedealt = max(0, unmoddamage - max(0, (TargetTile.UnitInSquare.Armor - armorpen)))
             TargetTile.UnitInSquare.ReduceHitPoints(damagedealt)
             print("Damage dealt: " + str(damagedealt))
             print("Target HP Left: " + str(TargetTile.UnitInSquare.HitPoints))
@@ -91,13 +78,6 @@ def AttackUnit(OwnTile, TargetTile):
                 TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
                 print("Target Dead")
-
-            '''
-            print("Unmodded Damage: " + str(unmoddamage))
-            print("Damage Dealt: " + str(damagedealt))
-            print("Ding dong 1")
-            print("Target health:" + str(TargetTile.UnitInSquare.HitPoints))
-            '''
 
         elif optimalrange < distance <= falloffrange:
             unmoddamage = abs(round(damage*((0.7 * accuracymodifier + (random.random()*20))/100)))
@@ -110,13 +90,6 @@ def AttackUnit(OwnTile, TargetTile):
                 TargetTile.UnitInSquare.OwningPlayer.PlayerUnitList.remove(TargetTile.UnitInSquare)
                 TargetTile.UnitInSquare = None
                 print("Target Dead")
-
-            '''
-            print("Unmodded Damage: " + str(unmoddamage))
-            print("Damage Dealt: " + str(damagedealt))
-            print("Ding Dong 2")
-            print("Target health:" + str(TargetTile.UnitInSquare.HitPoints))
-            '''
 
         else:
             print("Out of range. No damage dealt.")

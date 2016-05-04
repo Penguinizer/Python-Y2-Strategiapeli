@@ -39,12 +39,3 @@ class Map(object):
                 3 = Open
                 '''
                 self.MapMatrix[y][x] = Tile(TileType, self.TerrainType, y, x)
-
-    def ReturnMap(self):
-        return self.MapMatrix
-
-    def ReturnTile(self, X, Y):
-        return self.MapMatrix[Y][X]
-
-    def ReturnTerrainType(self):
-        return self.TerrainType

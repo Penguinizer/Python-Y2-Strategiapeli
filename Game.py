@@ -16,22 +16,6 @@ class Game(object):
         self.PopulateUnitArray()
         self.PopulateEquipmentArray()
 
-    def AddPlayer(self, Player):
-        ##Lisätään uusi pelaaja, lisätään yksi pelaajien määrään.
-        self.Players.append(Player)
-        self.Playercount += 1
-
-    def AddMap(self, Map):
-        ##Asetetaan kartta. Luodaan MapGen vaiheessa.
-        self.Map = Map
-
-    def SetPoints(self, Points):
-        self.Pointcount = Points
-
-    def IterateTurncounter(self):
-        self.Turncounter += 1
-        return self.Turncounter
-
     def ReturnSpecificUnit(self, UnitID):
         ##Palautetaan yksikkö jolla on haluttu UnitID. None jos ei löydy. Voidaan tarkistaa
         for Unit in self.BaselineUnitArray:
