@@ -96,6 +96,7 @@ pygame.init()
 size = (700, 500)
 screen = pygame.display.set_mode(size)
 '''
+'''
 import pygame
 import TextCenterer
 import time
@@ -118,3 +119,4 @@ def Button(rect, text, ac, pc, screen, action=None):
 
     text = TextCenterer.ButtonText(text, rect, (0,0,0))
     text.draw(screen)
+    '''

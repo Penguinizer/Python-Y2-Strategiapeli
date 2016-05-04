@@ -8,10 +8,6 @@ class Map(object):
         self.TerrainType = TerrainType
         self.Game = Game
 
-        '''
-        Vähän ihmeellinen formaatti matriisille. Mutta y määrittelee mikä rivi on menossa, ja X siitä rivistä paikan.
-        Eli on käytettävä käytännössä [Y,X]
-        '''
         random.seed()
         for y in range(0,XSize):
             for x in range(0,YSize):

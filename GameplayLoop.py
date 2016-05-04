@@ -144,10 +144,8 @@ def GameplayLoop(InputGame):
     def MoveUnit():
         if unitselected:
             if unitselected.OwningPlayer == activeplayer:
-                ##print(unitselected.UnitCoordinates)
                 Game.Map.MapMatrix[unitselected.UnitCoordinates[0]][unitselected.UnitCoordinates[1]].\
                     MoveUnit(Game.Map.MapMatrix[clickedsquare[0]][clickedsquare[1]])
-                ##print(unitselected.UnitCoordinates)
 
     def ToggleAttackMode():
         nonlocal attackmode
